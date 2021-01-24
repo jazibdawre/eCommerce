@@ -1,14 +1,15 @@
 import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
+import colors from 'colors';
 import morgan from 'morgan';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import connectDB from './config/db.js';
 
-const { graphqlHTTP } = require('express-graphql');
+import { graphqlHTTP } from 'express-graphql';
 
-const graphqlSchema = require('./graphql/schema/index');
-const graphqlResolvers = require('./graphql/resolvers/index');
+import graphqlSchema from './graphql/schemas/index.js';
+import graphqlResolvers from './graphql/resolvers/index.js';
 
 dotenv.config();
 
