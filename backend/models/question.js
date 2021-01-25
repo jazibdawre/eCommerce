@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const Question = new mongoose.Schema({
+const QuestionSchema = new mongoose.Schema({
   msg: {
     type: String,
     default: '',
@@ -18,4 +18,6 @@ const Question = new mongoose.Schema({
   timestamps: true,
 });
 
-module.exports = mongoose.model('Question', Question);
+const Question = mongoose.model('Question', QuestionSchema);
+
+export default Question;

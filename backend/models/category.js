@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
-const Category = new mongoose.Schema({
+const CategorySchema = new mongoose.Schema({
   name: {
     type: String,
     default: '',
@@ -10,4 +10,6 @@ const Category = new mongoose.Schema({
   timestamps: true,
 });
 
-module.exports = mongoose.model('Category', Category);
+const Category = mongoose.model('Category', CategorySchema);
+
+export default Category;
