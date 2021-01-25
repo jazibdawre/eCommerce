@@ -46,6 +46,26 @@ h2 {
 .carousel a {
   margin: 0 auto;
 }
+body{
+  background-color: #cee6ee;
+}
+.userLogin{
+  margin: 2px 16px;
+  padding: 8px 16px;
+  border: #C19A6B 2px solid !important;
+  border-radius: 8px;
+  color: #C19A6B !important;
+  font-size: 16px;
+}
+.userLogin:hover{
+  text-decoration: none;
+  color: #075869 !important;
+  background-color: #C19A6B !important;
+}
+
+.navLinks:hover{
+  border-bottom: #C19A6B 1px solid;
+}
 @media (max-width: 900px) {
   .carousel-caption h2 {
     font-size: 2.5vw;

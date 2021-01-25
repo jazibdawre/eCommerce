@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Container, NavDropdown, Row, Col } from 'react-bootstrap';
 import SearchBox from './SearchBox';
 import { logout } from '../actions/userActions';
+import NavBar from './NavBar';
 
 const Header = () => {
+  
+  const [currentUrl, setCurrentUrl] = useState(window.location.href.split('/')[3]);
+  useEffect(() => {
+    setCurrentUrl(window.location.href.split('/')[3]);
+    console.log(window.location.href.split('/'));
+  }, [currentUrl, window.location.href]);
   const dispatch = useDispatch();
 
   const userLogin = useSelector((state) => state.userLogin);
@@ -16,12 +23,19 @@ const Header = () => {
     dispatch(logout());
   };
 
+  if(currentUrl === 'login' || currentUrl === 'register'){
+    return(
+      <NavBar />
+    );
+  }
+
   return (
+    <>
     <header>
-      <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
+      <Navbar expand="lg" collapseOnSelect style={{ backgroundColor: '#075869' }} variant='dark'>
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>ProShop</Navbar.Brand>
+            <Navbar.Brand><h1 style={{fontSize: 20, color: '#C19A6B', padding: 0, marginBottom: 0}}>ProShop</h1></Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
@@ -31,11 +45,9 @@ const Header = () => {
               )}
             />
             <Nav className="ml-auto">
-              <LinkContainer to="/cart">
-                <Nav.Link>
-                  <i className="fas fa-shopping-cart" /> Cart
-                </Nav.Link>
-              </LinkContainer>
+              <a href="/cart" style={{ fontSize: 16, color: '#C19A6B', marginRight: 8, textDecoration: 'none' }} className='navLinks'>
+                <i className="fas fa-shopping-cart" /> Cart
+              </a>
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="username">
                   <LinkContainer to="/profile">
@@ -46,11 +58,11 @@ const Header = () => {
                   </NavDropdown.Item>
                 </NavDropdown>
               ) : (
-                <LinkContainer to="/login">
-                  <Nav.Link>
-                    <i className="fas fa-user" /> Sign In
-                  </Nav.Link>
-                </LinkContainer>
+                <>
+                  {<a href="/login" style={{ fontSize: 16, color: '#C19A6B', marginLeft: 8,textDecoration: 'none' }} className='navLinks'>
+                      <i className="fas fa-user" /> Login
+                    </a>}
+                </>
               )}
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown title="Admin" id="adminmenu">
@@ -70,6 +82,7 @@ const Header = () => {
         </Container>
       </Navbar>
     </header>
+    </>
   );
 };
 
