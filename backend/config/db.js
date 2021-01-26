@@ -4,7 +4,7 @@ import colors from 'colors';
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(
-      `mongodb+srv://${process.env.MONGO_UNAME}:${process.env.MONGO_PASS}@cluster0.i1jrs.mongodb.net/${process.env.MONGO_DB}?retryWrites=true&w=majority`,
+      process.env.MONGO_URI,
       {
         useUnifiedTopology: true,
         useNewUrlParser: true,

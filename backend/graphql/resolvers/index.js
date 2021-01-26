@@ -7,6 +7,12 @@ import {
   getOrders,
 } from './order.js';
 
+import { 
+  questions,
+  question,
+  editQuestions,
+ } from './chatbot.js';
+
 export default {
   orders: getOrders,
   myorders: getMyOrders,
@@ -14,4 +20,7 @@ export default {
   createOrder: addOrderItems,
   updateOrderToPaid: updateOrderToPaid,
   updateOrderToDelivered: updateOrderToDelivered,
+  questions: questions,
+  question: question,
+  editQuestions: editQuestions,
 };

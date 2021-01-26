@@ -38,7 +38,18 @@ export default buildSchema(`
         isDelivered:     Boolean!
         deliveredAt:     String
     }
-
+    
+    type Question {
+        _id: ID
+        msg: String
+        level: String
+        index: String
+    }
+    
+    type RespSuccess {
+        msg: String
+    }
+            
     input OrderItemsInput {
         name: String!
         qty: Float!
@@ -76,16 +87,25 @@ export default buildSchema(`
         deliveredAt:     String
     }
 
+    input QuestionInput {
+        msg: String
+        level: String
+        index: String
+    }
+
     type rootQuery {
         orders: [Order!]!
         myorders(userId: ID!): [Order!]!
         orderById(orderId: ID!): Order
+        questions: [Question]
+        question(level: String!, index: String!): Question
     }
 
     type rootMutation {
         createOrder(orderInput: OrderInput): Order
         updateOrderToPaid(orderId: ID!): Order!
         updateOrderToDelivered(orderId: ID!): Order!
+        editQuestions(details: [QuestionInput]!): RespSuccess
     }
 
     schema {
