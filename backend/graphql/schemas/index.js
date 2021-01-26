@@ -66,6 +66,13 @@ export default buildSchema(`
         password: String!
         isAdmin: Boolean
     }
+
+    input UpdateUserInput {
+        name: String
+        email: String
+        password: String
+        isAdmin: Boolean
+    }
             
     input OrderItemsInput {
         name: String!
@@ -128,8 +135,8 @@ export default buildSchema(`
         updateOrderToDelivered(orderId: ID!): Order!
         editQuestions(details: [QuestionInput]!): Response!
         registerUser(userInput: UserInput!): User!
-        updateUserProfile(userInput: UserInput!): User!
-        updateUser(userId: ID!, userInput: UserInput!): User!
+        updateUserProfile(userInput: UpdateUserInput!): User!
+        updateUser(userId: ID!, userInput: UpdateUserInput!): User!
         deleteUser(userId: ID!): Response!
     }
 
