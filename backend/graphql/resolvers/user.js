@@ -1,5 +1,6 @@
-import generateToken from '../../utils/generateToken.js';
 import User from '../../models/userModel.js';
+import { loggedin, admin } from '../../utils/verifyUser.js';
+import generateToken from '../../utils/generateToken.js';
 
 // Auth user & get token
 // Public
@@ -55,14 +56,16 @@ const registerUser = async (args, req) => {
 // Private
 const getUserProfile = async (args, req) => {
   try {
-    const user = await User.findById(req.user._id);
+    if (loggedin(req)) {
+      const user = await User.findById(req.user._id);
 
-    if (user) {
-      return {
-        ...user._doc,
-      };
-    } else {
-      throw new Error('User not found');
+      if (user) {
+        return {
+          ...user._doc,
+        };
+      } else {
+        throw new Error('User not found');
+      }
     }
   } catch (err) {
     console.log(err);
@@ -74,23 +77,25 @@ const getUserProfile = async (args, req) => {
 // Private
 const updateUserProfile = async (args, req) => {
   try {
-    const user = await User.findById(req.user._id);
+    if (loggedin(req)) {
+      const user = await User.findById(req.user._id);
 
-    if (user) {
-      user.name = args.userInput.name || user.name;
-      user.email = args.userInput.email || user.email;
-      if (args.userInput.password) {
-        user.password = args.userInput.password;
+      if (user) {
+        user.name = args.userInput.name || user.name;
+        user.email = args.userInput.email || user.email;
+        if (args.userInput.password) {
+          user.password = args.userInput.password;
+        }
+
+        const updatedUser = await user.save();
+
+        return {
+          ...updatedUser._doc,
+          token: generateToken(updatedUser._id),
+        };
+      } else {
+        throw new Error('User not found');
       }
-
-      const updatedUser = await user.save();
-
-      return {
-        ...updatedUser._doc,
-        token: generateToken(updatedUser._id),
-      };
-    } else {
-      throw new Error('User not found');
     }
   } catch (err) {
     console.log(err);
@@ -102,8 +107,10 @@ const updateUserProfile = async (args, req) => {
 // Private/Admin
 const getUsers = async (args, req) => {
   try {
-    const users = await User.find({});
-    return users;
+    if (admin(req)) {
+      const users = await User.find({});
+      return users;
+    }
   } catch (err) {
     console.log(err);
     throw err;
@@ -114,13 +121,15 @@ const getUsers = async (args, req) => {
 // Private/Admin
 const deleteUser = async (args, req) => {
   try {
-    const user = await User.findById(args.userId);
+    if (admin(req)) {
+      const user = await User.findById(args.userId);
 
-    if (user) {
-      await user.remove();
-      return { msg: 'User removed' };
-    } else {
-      throw new Error('User not found');
+      if (user) {
+        await user.remove();
+        return { msg: 'User removed' };
+      } else {
+        throw new Error('User not found');
+      }
     }
   } catch (err) {
     console.log(err);
@@ -132,12 +141,14 @@ const deleteUser = async (args, req) => {
 // Private/Admin
 const getUserById = async (args, req) => {
   try {
-    const user = await User.findById(args.userId).select('-password');
+    if (admin(req)) {
+      const user = await User.findById(args.userId).select('-password');
 
-    if (user) {
-      return user;
-    } else {
-      throw new Error('User not found');
+      if (user) {
+        return user;
+      } else {
+        throw new Error('User not found');
+      }
     }
   } catch (err) {
     console.log(err);
@@ -149,20 +160,22 @@ const getUserById = async (args, req) => {
 // Private/Admin
 const updateUser = async (args, req) => {
   try {
-    const user = await User.findById(args.userId);
+    if (admin(req)) {
+      const user = await User.findById(args.userId);
 
-    if (user) {
-      user.name = args.userInput.name || user.name;
-      user.email = args.userInput.email || user.email;
-      user.isAdmin = args.userInput.isAdmin || user.isAdmin;
+      if (user) {
+        user.name = args.userInput.name || user.name;
+        user.email = args.userInput.email || user.email;
+        user.isAdmin = args.userInput.isAdmin || user.isAdmin;
 
-      const updatedUser = await user.save();
+        const updatedUser = await user.save();
 
-      return {
-        ...updatedUser._doc,
-      };
-    } else {
-      throw new Error('User not found');
+        return {
+          ...updatedUser._doc,
+        };
+      } else {
+        throw new Error('User not found');
+      }
     }
   } catch (err) {
     console.log(err);
