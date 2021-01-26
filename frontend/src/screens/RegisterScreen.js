@@ -4,7 +4,6 @@ import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import FormContainer from '../components/FormContainer';
 import { register } from '../actions/userActions';
 
 const RegisterScreen = ({ location, history }) => {
@@ -30,7 +29,7 @@ const RegisterScreen = ({ location, history }) => {
   }, [history, userInfo, redirect]);
 
   const submitHandler = (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     if (password !== confirmPassword) {
       setMessage('Passwords do not match');
     } else {
@@ -40,9 +39,33 @@ const RegisterScreen = ({ location, history }) => {
 
   return (
     <>
-    <div style={{ boxShadow: '0 12px 30px -10px rgba(150,170,180,0.5)', padding: 10, margin: '20px auto', backgroundColor: 'white', borderRadius: 5}} className='col-md-6 col-6'>
-      <div style={{ display: 'flex', alignSelf: 'center', margin: "10px 20px", flexDirection: 'column' }}>
-        <p style={{textAlign: 'center', letterSpacing: 6, fontSize: 40}}>SIGN UP</p>
+      <div
+        style={{
+          boxShadow: '0 12px 30px -10px rgba(150,170,180,0.5)',
+          padding: 10,
+          margin: '20px auto',
+          backgroundColor: 'white',
+          borderRadius: 5,
+        }}
+        className="col-md-6 col-6"
+      >
+        <div
+          style={{
+            display: 'flex',
+            alignSelf: 'center',
+            margin: '10px 20px',
+            flexDirection: 'column',
+          }}
+        >
+          <p
+            style={{
+              textAlign: 'center',
+              letterSpacing: 6,
+              fontSize: 40,
+            }}
+          >
+            SIGN UP
+          </p>
           {message && <Message variant="danger">{message}</Message>}
           {error && <Message variant="danger">{error}</Message>}
           {loading && <Loader />}
@@ -96,14 +119,16 @@ const RegisterScreen = ({ location, history }) => {
             <Col style={{ textAlign: 'center' }}>
               Already have an Account?{' '}
               <Link
-                to={redirect ? `/login?redirect=${redirect}` : '/login'}
+                to={
+                  redirect ? `/login?redirect=${redirect}` : '/login'
+                }
               >
                 <u style={{ color: 'blue' }}>Login</u>
               </Link>
             </Col>
           </Row>
         </div>
-    </div>
+      </div>
     </>
   );
 };

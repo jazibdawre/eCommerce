@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -18,11 +18,21 @@ import UserEditScreen from './screens/UserEditScreen';
 import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import OrderListScreen from './screens/OrderListScreen';
+import NavBar from './components/NavBar'
 
 const App = () => {
   return (
+    <>
     <Router>
-      <Header />
+      <Switch>
+        <Route path="/login/:redirect" component={NavBar} />
+        <Route path="/login" component={NavBar} />
+        <Route path="/register/:redirect" component={NavBar} />
+        <Route path="/register" component={NavBar} />
+        <Route path="/" component={Header}/>
+      </Switch>
+    </Router>
+    <Router>
       <main className="py-3">
         <Container>
           <Route path="/order/:id" component={OrderScreen} />
@@ -77,6 +87,7 @@ const App = () => {
       </main>
       <Footer />
     </Router>
+    </>
   );
 };
 

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Form, Button, Row, Col, Card } from 'react-bootstrap';
+import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
-import FormContainer from '../components/FormContainer';
 import { login } from '../actions/userActions';
 
 const LoginScreen = ({ location, history }) => {
@@ -32,9 +31,33 @@ const LoginScreen = ({ location, history }) => {
   };
 
   return (
-    <div style={{ boxShadow: '0 12px 30px -10px rgba(150,170,180,0.5)', padding: 10, margin: '20px auto', backgroundColor: 'white', borderRadius: 5}} className='col-md-6 col-6'>
-        <div style={{ display: 'flex', alignSelf: 'center', margin: "10px 20px", flexDirection: 'column' }}>
-        <p style={{textAlign: 'center', letterSpacing: 6, fontSize: 40}}>LOGIN</p>
+    <div
+      style={{
+        boxShadow: '0 12px 30px -10px rgba(150,170,180,0.5)',
+        padding: 10,
+        margin: '20px auto',
+        backgroundColor: 'white',
+        borderRadius: 5,
+      }}
+      className="col-md-6 col-6"
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignSelf: 'center',
+          margin: '10px 20px',
+          flexDirection: 'column',
+        }}
+      >
+        <p
+          style={{
+            textAlign: 'center',
+            letterSpacing: 6,
+            fontSize: 40,
+          }}
+        >
+          LOGIN
+        </p>
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
@@ -63,16 +86,18 @@ const LoginScreen = ({ location, history }) => {
           </Button>
         </Form>
 
-        <div style={{textAlign: 'center'}}>
+        <div style={{ textAlign: 'center' }}>
           <Row className="py-3">
             <Col>
-              <a href="#" style={{color: 'black' }}><u>Forgot Password?</u></a>
+              <a href="/" style={{ color: 'black' }}>
+                <u>Forgot Password?</u>
+              </a>
             </Col>
           </Row>
 
           <Row className="py-1">
             <Col>
-              Don't have an account?{' '}
+              {`Don't have an account?`}{' '}
               <Link
                 to={
                   redirect
@@ -80,12 +105,12 @@ const LoginScreen = ({ location, history }) => {
                     : '/register'
                 }
               >
-                <u style={{color: 'blue'}}>Sign Up</u>
+                <u style={{ color: 'blue' }}>Sign Up</u>
               </Link>
             </Col>
           </Row>
         </div>
-        </div>
+      </div>
     </div>
   );
 };
