@@ -1,6 +1,16 @@
 import { buildSchema } from 'graphql';
 
 export default buildSchema(`
+
+    type User {
+        _id: ID!
+        name: String!
+        email: String!
+        password: String!
+        isAdmin: Boolean!
+        token: String
+    }
+
     type OrderItems {
         name: String!
         qty: Float!
@@ -25,7 +35,7 @@ export default buildSchema(`
 
     type Order {
         _id:             ID!
-        user:            ID!
+        user:            User!
         orderItems:      [OrderItems!]!
         shippingAddress: ShippingAddress!
         paymentMethod:   String!
@@ -46,8 +56,15 @@ export default buildSchema(`
         index: String
     }
     
-    type RespSuccess {
-        msg: String
+    type Response {
+        msg: String!
+    }
+
+    input UserInput {
+        name: String!
+        email: String!
+        password: String!
+        isAdmin: Boolean
     }
             
     input OrderItemsInput {
@@ -96,16 +113,24 @@ export default buildSchema(`
     type rootQuery {
         orders: [Order!]!
         myorders(userId: ID!): [Order!]!
-        orderById(orderId: ID!): Order
+        orderById(orderId: ID!): Order!
         questions: [Question]
         question(level: String!, index: String!): Question
+        authUser(email: String!, password: String!): User!
+        getUserProfile: User!
+        getUsers: [User!]!
+        getUserById(userId: ID!): User!
     }
 
     type rootMutation {
-        createOrder(orderInput: OrderInput): Order
+        createOrder(orderInput: OrderInput): Order!
         updateOrderToPaid(orderId: ID!): Order!
         updateOrderToDelivered(orderId: ID!): Order!
-        editQuestions(details: [QuestionInput]!): RespSuccess
+        editQuestions(details: [QuestionInput]!): Response!
+        registerUser(userInput: UserInput!): User!
+        updateUserProfile(userInput: UserInput!): User!
+        updateUser(userId: ID!, userInput: UserInput!): User!
+        deleteUser(userId: ID!): Response!
     }
 
     schema {
