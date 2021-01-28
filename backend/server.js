@@ -28,7 +28,7 @@ app.use(
   graphqlHTTP({
     schema: graphqlSchema,
     rootValue: graphqlResolvers,
-    graphiql: process.env.NODE_ENV === 'development' ? true : false,
+    graphiql: true,
   })
 );
 
@@ -62,3 +62,7 @@ app.listen(
     `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
   )
 );
+
+export default {
+  app
+}
