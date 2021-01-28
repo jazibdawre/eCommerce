@@ -1,6 +1,17 @@
 import { buildSchema } from 'graphql';
 
 export default buildSchema(`
+    type Product {
+        name: String!,
+        price: Float!,
+        user: ID!,
+        image: String!,
+        brand: String!,
+        category: ID!,
+        countInStock: Int!,
+        numReviews: Int,
+        description: String!
+    }
     type OrderItems {
         name: String!
         qty: Float!
@@ -49,6 +60,18 @@ export default buildSchema(`
     type RespSuccess {
         msg: String
     }
+
+    input ProductInput {
+        name: String!,
+        price: Float!,
+        user: ID!,
+        image: String!,
+        brand: String!,
+        category: String!,
+        countInStock: Int!,
+        numReviews: Int,
+        description: String!
+    }
             
     input OrderItemsInput {
         name: String!
@@ -70,6 +93,16 @@ export default buildSchema(`
         status: String!
         upString_time: String!
         email_address: String!
+    }
+
+    input updateProduct {
+        name: String,
+        price: Float,
+        image: String,
+        brand: String,
+        category: String,
+        countInStock: Int,
+        description: String,
     }
     
     input OrderInput {
@@ -99,6 +132,10 @@ export default buildSchema(`
         orderById(orderId: ID!): Order
         questions: [Question]
         question(level: String!, index: String!): Question
+        product: [Product!]!
+        getProduct(name: String!): [Product!]!
+        getProductById(id: ID!): [Product!]!
+        deleteProduct(id: ID!): Product!
     }
 
     type rootMutation {
@@ -106,6 +143,8 @@ export default buildSchema(`
         updateOrderToPaid(orderId: ID!): Order!
         updateOrderToDelivered(orderId: ID!): Order!
         editQuestions(details: [QuestionInput]!): RespSuccess
+        createProduct(productInput: ProductInput):  Product!
+        updateProduct(productId: ID!, updateProduct: updateProduct): Product!
     }
 
     schema {
