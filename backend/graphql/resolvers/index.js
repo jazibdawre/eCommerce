@@ -20,6 +20,14 @@ import {
 
 import { questions, question, editQuestions } from './chatbot.js';
 
+import {
+  createProduct,
+  getProduct,
+  getProductById,
+  updateProduct,
+  deleteProduct,
+} from './products.js';
+
 export default {
   //orders
   orders: getOrders,
@@ -41,4 +49,10 @@ export default {
   deleteUser: deleteUser,
   getUserById: getUserById,
   updateUser: updateUser,
+  //products
+  createProduct: createProduct,
+  getProduct: getProduct,
+  getProductById: getProductById,
+  updateProduct: updateProduct,
+  deleteProduct: deleteProduct,
 };

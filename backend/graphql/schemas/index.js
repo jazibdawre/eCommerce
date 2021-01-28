@@ -11,6 +11,18 @@ export default buildSchema(`
         token: String
     }
 
+    type Product {
+        name: String!,
+        price: Float!,
+        user: ID!,
+        image: String!,
+        brand: String!,
+        category: ID!,
+        countInStock: Int!,
+        numReviews: Int,
+        description: String!
+    }
+    
     type OrderItems {
         name: String!
         qty: Float!
@@ -73,6 +85,18 @@ export default buildSchema(`
         password: String
         isAdmin: Boolean
     }
+
+    input ProductInput {
+        name: String!,
+        price: Float!,
+        user: ID!,
+        image: String!,
+        brand: String!,
+        category: String!,
+        countInStock: Int!,
+        numReviews: Int,
+        description: String!
+    }
             
     input OrderItemsInput {
         name: String!
@@ -94,6 +118,16 @@ export default buildSchema(`
         status: String!
         upString_time: String!
         email_address: String!
+    }
+
+    input updateProduct {
+        name: String,
+        price: Float,
+        image: String,
+        brand: String,
+        category: String,
+        countInStock: Int,
+        description: String,
     }
     
     input OrderInput {
@@ -127,6 +161,10 @@ export default buildSchema(`
         getUserProfile: User!
         getUsers: [User!]!
         getUserById(userId: ID!): User!
+        product: [Product!]!
+        getProduct(name: String!): [Product!]!
+        getProductById(id: ID!): [Product!]!
+        deleteProduct(id: ID!): Product!
     }
 
     type rootMutation {
@@ -138,6 +176,8 @@ export default buildSchema(`
         updateUserProfile(userInput: UpdateUserInput!): User!
         updateUser(userId: ID!, userInput: UpdateUserInput!): User!
         deleteUser(userId: ID!): Response!
+        createProduct(productInput: ProductInput):  Product!
+        updateProduct(productId: ID!, updateProduct: updateProduct): Product!
     }
 
     schema {
