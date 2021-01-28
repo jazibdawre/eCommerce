@@ -12,10 +12,16 @@ const addOrderItems = async (args) => {
       shippingPrice: args.orderInput.shippingPrice,
       totalPrice: args.orderInput.totalPrice,
       isPaid: args.orderInput.isPaid,
-      paidAt: new Date(args.orderInput.paidAt),
       isDelivered: args.orderInput.isDelivered,
-      deliveredAt: new Date(args.orderInput.deliveredAt),
     });
+
+    if (args.orderInput.paidAt) {
+      order.paidAt = new Date(args.orderInput.paidAt);
+    }
+
+    if (args.orderInput.deliveredAt) {
+      order.deliveredAt = new Date(args.orderInput.deliveredAt);
+    }
 
     const res = await order.save();
     return res;
@@ -27,10 +33,12 @@ const addOrderItems = async (args) => {
 
 const getOrderById = async (args) => {
   try {
-    const order = await Order.findById(args.orderId).populate(
-      'user',
-      'name email'
-    );
+    const order = await Order.findById(args.orderId);
+    // .populate(
+    //   'user',
+    //   'name email'
+    // );
+    // To be kept commented until users are implemented and graohql schema is changed
 
     if (order) {
       return order;
