@@ -5,7 +5,6 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
 import SearchBox from './SearchBox';
 import { logout } from '../actions/userActions';
-import NavBar from './NavBar';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -25,7 +24,7 @@ const Header = () => {
           style={{ backgroundColor: '#075869' }}
           variant="dark"
         >
-          <Container>
+          <Container fluid>
             <LinkContainer to="/">
               <Navbar.Brand>
                 <h1
@@ -49,19 +48,18 @@ const Header = () => {
               />
               <Nav className="ml-auto">
                 <a
-                  href="/cart"
+                  href={userInfo ? '/cart' : '/register'}
                   style={{
-                    fontSize: 16,
                     color: '#C19A6B',
-                    marginRight: 8,
+                    marginRight: 6,
                     textDecoration: 'none',
                   }}
                   className="navLinks"
                 >
-                  <i className="fas fa-shopping-cart" /> Cart
+                  <i className={userInfo ? "fas fa-shopping-cart" : ""} /> {userInfo ? `CART` : `SIGN UP`}
                 </a>
                 {userInfo ? (
-                  <NavDropdown title={userInfo.name} id="username">
+                  <NavDropdown title={userInfo.name} id="username" style={{ fontSize: 16 }}>
                     <LinkContainer to="/profile">
                       <NavDropdown.Item>Profile</NavDropdown.Item>
                     </LinkContainer>

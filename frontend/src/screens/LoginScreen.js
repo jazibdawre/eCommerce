@@ -39,7 +39,7 @@ const LoginScreen = ({ location, history }) => {
         backgroundColor: 'white',
         borderRadius: 5,
       }}
-      className="col-md-6 col-6"
+      className={window.screen.width > 768 ? 'col-md-6 col-6' : ''}
     >
       <div
         style={{

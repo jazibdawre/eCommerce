@@ -46,25 +46,41 @@ h2 {
 .carousel a {
   margin: 0 auto;
 }
-body{
+body {
   background-color: #cee6ee;
 }
-.userLogin{
+.userLogin {
   margin: 2px 16px;
   padding: 8px 16px;
-  border: #C19A6B 2px solid !important;
+  border: #c19a6b 2px solid !important;
   border-radius: 8px;
-  color: #C19A6B !important;
+  color: #c19a6b !important;
   font-size: 16px;
 }
-.userLogin:hover{
+.userLogin:hover {
   text-decoration: none;
   color: #075869 !important;
-  background-color: #C19A6B !important;
+  background-color: #c19a6b !important;
 }
-
-.navLinks:hover{
-  border-bottom: #C19A6B 1px solid;
+.navLinks {
+  border: 2px #c19a6b solid;
+  border-radius: 8px;
+  color: #c19a6b !important;
+  font-size: 16px;
+  padding: 8px;
+}
+.navLinks:hover {
+  text-decoration: none;
+  color: #075869 !important;
+  background-color: #c19a6b !important;
+}
+.red {
+  border: 1px solid red;
+  border-radius: 6px;
+}
+.green {
+  border: 1px solid green;
+  border-radius: 6px;
 }
 @media (max-width: 900px) {
   .carousel-caption h2 {
