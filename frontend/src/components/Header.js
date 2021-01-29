@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -56,10 +56,17 @@ const Header = () => {
                   }}
                   className="navLinks"
                 >
-                  <i className={userInfo ? "fas fa-shopping-cart" : ""} /> {userInfo ? `CART` : `SIGN UP`}
+                  <i
+                    className={userInfo ? 'fas fa-shopping-cart' : ''}
+                  />{' '}
+                  {userInfo ? `CART` : `SIGN UP`}
                 </a>
                 {userInfo ? (
-                  <NavDropdown title={userInfo.name} id="username" style={{ fontSize: 16 }}>
+                  <NavDropdown
+                    title={userInfo.name}
+                    id="username"
+                    style={{ fontSize: 16 }}
+                  >
                     <LinkContainer to="/profile">
                       <NavDropdown.Item>Profile</NavDropdown.Item>
                     </LinkContainer>

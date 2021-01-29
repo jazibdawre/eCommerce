@@ -23,7 +23,12 @@ const SearchBox = ({ history }) => {
         className="mr-sm-2 ml-sm-5"
         style={{ width: '60%', borderRadius: 6 }}
       />
-      <Button type="submit" variant="outline-success" className="p-2" style={{borderRadius: 6}}>
+      <Button
+        type="submit"
+        variant="outline-success"
+        className="p-2"
+        style={{ borderRadius: 6 }}
+      >
         Search
       </Button>
     </Form>

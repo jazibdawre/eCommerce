@@ -16,7 +16,7 @@ const RegisterScreen = ({ location, history }) => {
   const [validationStatus, setValidationStatus] = useState({
     name: false,
     number: false,
-    email: false
+    email: false,
   });
 
   const dispatch = useDispatch();
@@ -35,56 +35,56 @@ const RegisterScreen = ({ location, history }) => {
   }, [history, userInfo, redirect]);
 
   const validationFunc = (name, number, email) => {
-    if(name){
+    if (name) {
       const nameRegex = /^[A-Za-z ]+$/;
-      //console.log(name.match(nameRegex));
-      if(name.match(nameRegex)){
+      // console.log(name.match(nameRegex));
+      if (name.match(nameRegex)) {
         setValidationStatus({
           name: true,
           number: false,
-          email: false
+          email: false,
         });
-      } else{
+      } else {
         setValidationStatus({
           name: false,
           number: false,
-          email: false
+          email: false,
         });
       }
     }
 
-    if(number){
+    if (number) {
       const numberRegex = /^\d{10}$/;
       console.log(number);
-      if(number.match(numberRegex)){
+      if (number.match(numberRegex)) {
         setValidationStatus({
           name: false,
           number: true,
-          email: false
+          email: false,
         });
-      } else{
+      } else {
         setValidationStatus({
           name: false,
           number: false,
-          email: false
+          email: false,
         });
       }
     }
 
-    if(email){
+    if (email) {
       const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      //console.log(emailRegex.test(String(email).toLowerCase()));
-      if(emailRegex.test(String(email).toLowerCase())){
+      // console.log(emailRegex.test(String(email).toLowerCase()));
+      if (emailRegex.test(String(email).toLowerCase())) {
         setValidationStatus({
           name: false,
           number: false,
-          email: true
+          email: true,
         });
-      } else{
+      } else {
         setValidationStatus({
           name: false,
           number: false,
-          email: false
+          email: false,
         });
       }
     }
@@ -96,7 +96,12 @@ const RegisterScreen = ({ location, history }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword || validationStatus.email == false || validationStatus.name == false || validationStatus.number == false) {
+    if (
+      password !== confirmPassword ||
+      validationStatus.email === false ||
+      validationStatus.name === false ||
+      validationStatus.number === false
+    ) {
       setMessage('Passwords do not match');
     } else {
       dispatch(register(name, number, email, password));
@@ -144,7 +149,11 @@ const RegisterScreen = ({ location, history }) => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className={!validationStatus.name && name.length != 0 ? 'red' : ''}
+                className={
+                  !validationStatus.name && name.length !== 0
+                    ? 'red'
+                    : ''
+                }
               />
             </Form.Group>
 
@@ -156,7 +165,11 @@ const RegisterScreen = ({ location, history }) => {
                 value={number}
                 onChange={(e) => setNumber(e.target.value)}
                 required
-                className={!validationStatus.number && number.length != 0 ? 'red' : ''}
+                className={
+                  !validationStatus.number && number.length !== 0
+                    ? 'red'
+                    : ''
+                }
               />
             </Form.Group>
 
@@ -168,7 +181,11 @@ const RegisterScreen = ({ location, history }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className={!validationStatus.email && email.length != 0 ? 'red' : ''}
+                className={
+                  !validationStatus.email && email.length !== 0
+                    ? 'red'
+                    : ''
+                }
               />
             </Form.Group>
 
