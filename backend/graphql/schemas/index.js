@@ -161,7 +161,6 @@ export default buildSchema(`
         getUserProfile: User!
         getUsers: [User!]!
         getUserById(userId: ID!): User!
-        product: [Product!]!
         getProduct(name: String!): [Product!]!
         getProductById(id: ID!): [Product!]!
         deleteProduct(id: ID!): Product!
