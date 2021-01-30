@@ -24,6 +24,7 @@ import {
   createProduct,
   getProduct,
   getProductById,
+  getProductByCategory,
   updateProduct,
   deleteProduct,
 } from './products.js';
@@ -53,6 +54,7 @@ export default {
   createProduct: createProduct,
   getProduct: getProduct,
   getProductById: getProductById,
+  getProductByCategory: getProductByCategory,
   updateProduct: updateProduct,
   deleteProduct: deleteProduct,
 };

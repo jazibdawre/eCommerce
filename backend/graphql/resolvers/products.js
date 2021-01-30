@@ -24,12 +24,11 @@ const createProduct = async (args) => {
 const getProduct = async (args) => {
     try {
         const product = Product.find({name: args.name});
-        if (product) {
-            return product;
-        } else {
+        if (!product) {
             res.status(404)
             throw new Error('Product not found')
-        }
+        } 
+        return product;
     } catch (err) {
         console.log(err);
         throw err;
@@ -39,12 +38,25 @@ const getProduct = async (args) => {
 const getProductById = async (args) => {
     try {
         const product = Product.find({_id: args.id});
-        if (product) {
-            return product;
-        } else {
+        if (!product) {
+            res.status(404)
+            throw new Error('Product not found')
+        } 
+        return product;
+    } catch (err) {
+        console.log(err);
+        throw err;
+    }
+}
+
+const getProductByCategory = async (args) => {
+    try {
+        const products = await Product.find({category: args.id});
+        if(!products) {
             res.status(404)
             throw new Error('Product not found')
         }
+        return products;
     } catch (err) {
         console.log(err);
         throw err;
@@ -53,8 +65,6 @@ const getProductById = async (args) => {
 
 const updateProduct = async (args) => {
     try {
-        console.log(args.productId);
-        // console.log(args);
         const product = await Product.findById(args.productId);
         if(!product) {
             res.status(404)
@@ -62,7 +72,6 @@ const updateProduct = async (args) => {
         }
         await Product.findByIdAndUpdate(args.productId, {$set: args.updateProduct});
         const updatedProduct = await Product.findById(args.productId);
-        console.log(updatedProduct);
         return updatedProduct;
     } catch (err) {
         console.log(err);
@@ -73,15 +82,12 @@ const updateProduct = async (args) => {
 const deleteProduct = async (args) => {
     try {
         const product = await Product.find({_id: args.id});
-        if (product) {
-            const deleted = await Product.findByIdAndDelete(args.id);
-            // console.log(deleted);
-            return {...deleted._doc};
-
-        } else {
+        if(!product) {
             res.status(404)
             throw new Error('Product not found')
         }
+        const deleted = await Product.findByIdAndDelete(args.id);
+        return {...deleted._doc};
     } catch (err) {
         console.log(err);
         throw err;
@@ -92,6 +98,7 @@ export  {
     createProduct,
     getProduct,
     getProductById,
+    getProductByCategory,
     updateProduct,
     deleteProduct
 }

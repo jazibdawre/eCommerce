@@ -164,6 +164,7 @@ export default buildSchema(`
         product: [Product!]!
         getProduct(name: String!): [Product!]!
         getProductById(id: ID!): [Product!]!
+        getProductByCategory(id: ID!): [Product!]!
         deleteProduct(id: ID!): Product!
     }
 
