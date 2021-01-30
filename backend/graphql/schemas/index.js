@@ -42,7 +42,7 @@ export default buildSchema(`
     type PaymentResult {
         id: String!
         status: String!
-        upString_time: String!
+        update_time: String!
         email_address: String!
     }
 
@@ -104,7 +104,7 @@ export default buildSchema(`
         qty: Float!
         image: String!
         price: Float!
-        product: Product!
+        product: ID!
     }
 
     input ShippingAddressInput {
@@ -117,7 +117,7 @@ export default buildSchema(`
     input PaymentResultInput {
         id: String!
         status: String!
-        upString_time: String!
+        update_time: String!
         email_address: String!
     }
 
@@ -169,7 +169,7 @@ export default buildSchema(`
 
     type rootMutation {
         createOrder(orderInput: OrderInput): Order!
-        updateOrderToPaid(orderId: ID!): Order!
+        updateOrderToPaid(orderId: ID!, paymentResult: PaymentResultInput!): Order!
         updateOrderToDelivered(orderId: ID!): Order!
         editQuestions(details: [QuestionInput]!): Response!
         registerUser(userInput: UserInput!): User!

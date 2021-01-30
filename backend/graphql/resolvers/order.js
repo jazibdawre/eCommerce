@@ -1,5 +1,7 @@
 import Order from '../../models/orderModel.js';
 
+// PS: After .save(), user & product are not populated and can't be queried via graphql
+
 const addOrderItems = async (args) => {
   try {
     const order = new Order({
@@ -33,12 +35,9 @@ const addOrderItems = async (args) => {
 
 const getOrderById = async (args) => {
   try {
-    const order = await Order.findById(args.orderId);
-    // .populate(
-    //   'user',
-    //   'name email'
-    // );
-    // To be kept commented until users are implemented and graohql schema is changed
+    const order = await Order.findById(args.orderId).populate(
+      'user orderItems.product'
+    );
 
     if (order) {
       return order;
@@ -51,19 +50,14 @@ const getOrderById = async (args) => {
   }
 };
 
-const updateOrderToPaid = async (args) => {
+const updateOrderToPaid = async (args, req) => {
   try {
     const order = await Order.findById(args.orderId);
 
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
-      order.paymentResult = {
-        id: req.body.id,
-        status: req.body.status,
-        update_time: req.body.update_time,
-        email_address: req.body.payer.email_address,
-      };
+      order.paymentResult = args.paymentResult;
 
       const updatedOrder = await order.save();
       return updatedOrder;
@@ -97,7 +91,10 @@ const updateOrderToDelivered = async (args) => {
 
 const getMyOrders = async (args) => {
   try {
-    const orders = await Order.find({ user: args.userId });
+    const orders = await Order.find({ user: args.userId }).populate(
+      'user orderItems.product'
+    );
+
     return orders.map((order) => {
       return {
         ...order._doc,
@@ -118,7 +115,8 @@ const getMyOrders = async (args) => {
 
 const getOrders = async (args) => {
   try {
-    const orders = await Order.find({});
+    const orders = await Order.find({}).populate('user orderItems.product');
+
     return orders.map((order) => {
       return {
         ...order._doc,
