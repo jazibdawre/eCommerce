@@ -12,9 +12,10 @@ export default buildSchema(`
     }
 
     type Product {
+        _id: ID!
         name: String!,
         price: Float!,
-        user: ID!,
+        user: User!,
         image: String!,
         brand: String!,
         category: ID!,
@@ -28,7 +29,7 @@ export default buildSchema(`
         qty: Float!
         image: String!
         price: Float!
-        product: ID!
+        product: Product!
     }
 
     type ShippingAddress {
@@ -103,7 +104,7 @@ export default buildSchema(`
         qty: Float!
         image: String!
         price: Float!
-        product: ID!
+        product: Product!
     }
 
     input ShippingAddressInput {
