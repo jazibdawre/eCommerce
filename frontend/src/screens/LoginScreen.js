@@ -5,6 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { login } from '../actions/userActions';
+import {
+  StyledContainerDiv,
+  StyledContainerDiv2,
+  StyledHeader,
+} from '../util/StyledComponents';
 
 const LoginScreen = ({ location, history }) => {
   const [email, setEmail] = useState('');
@@ -31,33 +36,9 @@ const LoginScreen = ({ location, history }) => {
   };
 
   return (
-    <div
-      style={{
-        boxShadow: '0 12px 30px -10px rgba(150,170,180,0.5)',
-        padding: 10,
-        margin: '20px auto',
-        backgroundColor: 'white',
-        borderRadius: 5,
-      }}
-      className={window.screen.width > 768 ? 'col-md-6 col-6' : ''}
-    >
-      <div
-        style={{
-          display: 'flex',
-          alignSelf: 'center',
-          margin: '10px 20px',
-          flexDirection: 'column',
-        }}
-      >
-        <p
-          style={{
-            textAlign: 'center',
-            letterSpacing: 6,
-            fontSize: 40,
-          }}
-        >
-          LOGIN
-        </p>
+    <StyledContainerDiv>
+      <StyledContainerDiv2>
+        <StyledHeader>LOGIN</StyledHeader>
         {error && <Message variant="danger">{error}</Message>}
         {loading && <Loader />}
         <Form onSubmit={submitHandler}>
@@ -110,8 +91,8 @@ const LoginScreen = ({ location, history }) => {
             </Col>
           </Row>
         </div>
-      </div>
-    </div>
+      </StyledContainerDiv2>
+    </StyledContainerDiv>
   );
 };
 

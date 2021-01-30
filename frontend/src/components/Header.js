@@ -3,8 +3,10 @@ import { Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import styled from 'styled-components';
 import SearchBox from './SearchBox';
 import { logout } from '../actions/userActions';
+import { DARK_BLUE_2, LIGHT_PEACH } from '../util/colors';
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -18,25 +20,11 @@ const Header = () => {
   return (
     <>
       <header>
-        <Navbar
-          expand="lg"
-          collapseOnSelect
-          style={{ backgroundColor: '#075869' }}
-          variant="dark"
-        >
+        <StyledNavbar expand="lg" collapseOnSelect variant="dark">
           <Container fluid>
             <LinkContainer to="/">
               <Navbar.Brand>
-                <h1
-                  style={{
-                    fontSize: 20,
-                    color: '#C19A6B',
-                    padding: 0,
-                    marginBottom: 0,
-                  }}
-                >
-                  ProShop
-                </h1>
+                <StyledH1>ProShop</StyledH1>
               </Navbar.Brand>
             </LinkContainer>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -47,20 +35,15 @@ const Header = () => {
                 )}
               />
               <Nav className="ml-auto">
-                <a
+                <StyledA
                   href={userInfo ? '/cart' : '/register'}
-                  style={{
-                    color: '#C19A6B',
-                    marginRight: 6,
-                    textDecoration: 'none',
-                  }}
                   className="navLinks"
                 >
                   <i
                     className={userInfo ? 'fas fa-shopping-cart' : ''}
                   />{' '}
                   {userInfo ? `CART` : `SIGN UP`}
-                </a>
+                </StyledA>
                 {userInfo ? (
                   <NavDropdown
                     title={userInfo.name}
@@ -76,18 +59,9 @@ const Header = () => {
                   </NavDropdown>
                 ) : (
                   <>
-                    <a
-                      href="/login"
-                      style={{
-                        fontSize: 16,
-                        color: '#C19A6B',
-                        marginLeft: 8,
-                        textDecoration: 'none',
-                      }}
-                      className="navLinks"
-                    >
+                    <StyledA href="/login" className="navLinks">
                       <i className="fas fa-user" /> Login
-                    </a>
+                    </StyledA>
                   </>
                 )}
                 {userInfo && userInfo.isAdmin && (
@@ -106,10 +80,28 @@ const Header = () => {
               </Nav>
             </Navbar.Collapse>
           </Container>
-        </Navbar>
+        </StyledNavbar>
       </header>
     </>
   );
 };
 
 export default Header;
+
+const StyledNavbar = styled(Navbar)`
+  background-color: ${DARK_BLUE_2};
+`;
+
+const StyledH1 = styled.h1`
+  color: ${LIGHT_PEACH};
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+`;
+
+const StyledA = styled.a`
+  color: ${LIGHT_PEACH};
+  marginright: 6;
+  textdecoration: 'none';
+  margin: 0 10px;
+`;

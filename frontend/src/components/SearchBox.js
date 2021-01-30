@@ -14,7 +14,11 @@ const SearchBox = ({ history }) => {
   };
 
   return (
-    <Form onSubmit={submitHandler} inline style={{ width: '70%' }}>
+    <Form
+      onSubmit={submitHandler}
+      inline
+      style={{ width: '70%', justifyContent: 'center' }}
+    >
       <Form.Control
         type="text"
         name="q"

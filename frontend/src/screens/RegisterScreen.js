@@ -5,6 +5,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { register } from '../actions/userActions';
+import {
+  StyledContainerDiv,
+  StyledContainerDiv2,
+  StyledHeader,
+} from '../util/StyledComponents';
 
 const RegisterScreen = ({ location, history }) => {
   const [name, setName] = useState('');
@@ -34,56 +39,57 @@ const RegisterScreen = ({ location, history }) => {
     }
   }, [history, userInfo, redirect]);
 
-  const validationFunc = (name, number, email) => {
-    if (name) {
-      const nameRegex = /^[A-Za-z ]+$/;
-      // console.log(name.match(nameRegex));
-      if (name.match(nameRegex)) {
+  const validationFunc = (nameParam, numberParam, emailParam) => {
+    if (nameParam) {
+      const nameRegex = /[A-Za-z ]+$/;
+      console.log(nameParam.match(nameRegex));
+      // console.log(name);
+      if (nameParam.match(nameRegex)) {
         setValidationStatus({
           name: true,
-          number: false,
-          email: false,
+          number: validationStatus.number,
+          email: validationStatus.email,
         });
       } else {
         setValidationStatus({
           name: false,
-          number: false,
-          email: false,
+          number: validationStatus.number,
+          email: validationStatus.email,
         });
       }
     }
 
-    if (number) {
+    if (numberParam) {
       const numberRegex = /^\d{10}$/;
-      console.log(number);
-      if (number.match(numberRegex)) {
+      // console.log(numberParam);
+      if (numberParam.match(numberRegex)) {
         setValidationStatus({
-          name: false,
+          name: validationStatus.name,
           number: true,
-          email: false,
+          email: validationStatus.email,
         });
       } else {
         setValidationStatus({
-          name: false,
+          name: validationStatus.name,
           number: false,
-          email: false,
+          email: validationStatus.email,
         });
       }
     }
 
-    if (email) {
+    if (emailParam) {
       const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       // console.log(emailRegex.test(String(email).toLowerCase()));
-      if (emailRegex.test(String(email).toLowerCase())) {
+      if (emailRegex.test(String(emailParam).toLowerCase())) {
         setValidationStatus({
-          name: false,
-          number: false,
+          name: validationStatus.name,
+          number: validationStatus.number,
           email: true,
         });
       } else {
         setValidationStatus({
-          name: false,
-          number: false,
+          name: validationStatus.name,
+          number: validationStatus.number,
           email: false,
         });
       }
@@ -110,33 +116,9 @@ const RegisterScreen = ({ location, history }) => {
 
   return (
     <>
-      <div
-        style={{
-          boxShadow: '0 12px 30px -10px rgba(150,170,180,0.5)',
-          padding: 10,
-          margin: '20px auto',
-          backgroundColor: 'white',
-          borderRadius: 5,
-        }}
-        className={window.screen.width > 768 ? 'col-md-6 col-6' : ''}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignSelf: 'center',
-            margin: '10px 20px',
-            flexDirection: 'column',
-          }}
-        >
-          <p
-            style={{
-              textAlign: 'center',
-              letterSpacing: 6,
-              fontSize: 40,
-            }}
-          >
-            SIGN UP
-          </p>
+      <StyledContainerDiv>
+        <StyledContainerDiv2>
+          <StyledHeader>SIGN UP</StyledHeader>
           {message && <Message variant="danger">{message}</Message>}
           {error && <Message variant="danger">{error}</Message>}
           {loading && <Loader />}
@@ -228,8 +210,8 @@ const RegisterScreen = ({ location, history }) => {
               </Link>
             </Col>
           </Row>
-        </div>
-      </div>
+        </StyledContainerDiv2>
+      </StyledContainerDiv>
     </>
   );
 };
