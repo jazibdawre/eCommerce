@@ -1,7 +1,6 @@
 import { buildSchema } from 'graphql';
 
 export default buildSchema(`
-
     type User {
         _id: ID!
         name: String!
@@ -10,7 +9,6 @@ export default buildSchema(`
         isAdmin: Boolean!
         token: String
     }
-
     type Product {
         name: String!,
         price: Float!,
@@ -30,21 +28,18 @@ export default buildSchema(`
         price: Float!
         product: ID!
     }
-
     type ShippingAddress {
         address: String!
         city: String!
         postalCode: String!
         country: String!
     }
-
     type PaymentResult {
         id: String!
         status: String!
         upString_time: String!
         email_address: String!
     }
-
     type Order {
         _id:             ID!
         user:            User!
@@ -71,21 +66,18 @@ export default buildSchema(`
     type Response {
         msg: String!
     }
-
     input UserInput {
         name: String!
         email: String!
         password: String!
         isAdmin: Boolean
     }
-
     input UpdateUserInput {
         name: String
         email: String
         password: String
         isAdmin: Boolean
     }
-
     input ProductInput {
         name: String!,
         price: Float!,
@@ -105,21 +97,18 @@ export default buildSchema(`
         price: Float!
         product: ID!
     }
-
     input ShippingAddressInput {
         address: String!
         city: String!
         postalCode: String!
         country: String!
     }
-
     input PaymentResultInput {
         id: String!
         status: String!
         upString_time: String!
         email_address: String!
     }
-
     input updateProduct {
         name: String,
         price: Float,
@@ -144,13 +133,11 @@ export default buildSchema(`
         isDelivered:     Boolean!
         deliveredAt:     String
     }
-
     input QuestionInput {
         msg: String
         level: String
         index: String
     }
-
     type rootQuery {
         orders: [Order!]!
         myorders(userId: ID!): [Order!]!
@@ -167,7 +154,6 @@ export default buildSchema(`
         getProductByCategory(id: ID!): [Product!]!
         deleteProduct(id: ID!): Product!
     }
-
     type rootMutation {
         createOrder(orderInput: OrderInput): Order!
         updateOrderToPaid(orderId: ID!): Order!
@@ -180,7 +166,6 @@ export default buildSchema(`
         createProduct(productInput: ProductInput):  Product!
         updateProduct(productId: ID!, updateProduct: updateProduct): Product!
     }
-
     schema {
         query: rootQuery
         mutation: rootMutation

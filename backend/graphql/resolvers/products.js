@@ -1,3 +1,4 @@
+import Category from '../../models/category.js';
 import Product from '../../models/productModel.js';
 
 const createProduct = async (args) => {
@@ -25,7 +26,6 @@ const getProduct = async (args) => {
     try {
         const product = Product.find({name: args.name});
         if (!product) {
-            res.status(404)
             throw new Error('Product not found')
         } 
         return product;
@@ -39,7 +39,6 @@ const getProductById = async (args) => {
     try {
         const product = Product.find({_id: args.id});
         if (!product) {
-            res.status(404)
             throw new Error('Product not found')
         } 
         return product;
@@ -53,7 +52,6 @@ const getProductByCategory = async (args) => {
     try {
         const products = await Product.find({category: args.id});
         if(!products) {
-            res.status(404)
             throw new Error('Product not found')
         }
         return products;
@@ -67,7 +65,6 @@ const updateProduct = async (args) => {
     try {
         const product = await Product.findById(args.productId);
         if(!product) {
-            res.status(404)
             throw new Error('Product not found')
         }
         await Product.findByIdAndUpdate(args.productId, {$set: args.updateProduct});
@@ -83,7 +80,6 @@ const deleteProduct = async (args) => {
     try {
         const product = await Product.find({_id: args.id});
         if(!product) {
-            res.status(404)
             throw new Error('Product not found')
         }
         const deleted = await Product.findByIdAndDelete(args.id);
