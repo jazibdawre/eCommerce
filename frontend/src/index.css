@@ -47,38 +47,10 @@ h2 {
   margin: 0 auto;
 }
 body {
-  background-color: #cee6ee;
-}
-.userLogin {
-  margin: 2px 16px;
-  padding: 8px 16px;
-  border: #c19a6b 2px solid !important;
-  border-radius: 8px;
-  color: #c19a6b !important;
-  font-size: 16px;
-}
-.userLogin:hover {
-  text-decoration: none;
-  color: #075869 !important;
-  background-color: #c19a6b !important;
-}
-.navLinks {
-  border: 2px #ffdfc3 solid;
-  border-radius: 8px;
-  font-size: 16px;
-  padding: 8px;
-}
-.navLinks:hover {
-  text-decoration: none;
-  color: #30475e !important;
-  background-color: #ffdfc3 !important;
+  background-color: #dff2fa;
 }
 .red {
   border: 1px solid red;
-  border-radius: 6px;
-}
-.green {
-  border: 1px solid green;
   border-radius: 6px;
 }
 @media (max-width: 900px) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Link, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
@@ -35,15 +35,15 @@ const Header = () => {
                 )}
               />
               <Nav className="ml-auto">
-                <StyledA
-                  href={userInfo ? '/cart' : '/register'}
-                  className="navLinks"
+                <StyledNavLink
+                  as={Link}
+                  to={userInfo ? '/cart' : '/register'}
                 >
                   <i
                     className={userInfo ? 'fas fa-shopping-cart' : ''}
                   />{' '}
                   {userInfo ? `CART` : `SIGN UP`}
-                </StyledA>
+                </StyledNavLink>
                 {userInfo ? (
                   <NavDropdown
                     title={userInfo.name}
@@ -59,9 +59,9 @@ const Header = () => {
                   </NavDropdown>
                 ) : (
                   <>
-                    <StyledA href="/login" className="navLinks">
+                    <StyledNavLink as={Link} to="/login">
                       <i className="fas fa-user" /> Login
-                    </StyledA>
+                    </StyledNavLink>
                   </>
                 )}
                 {userInfo && userInfo.isAdmin && (
@@ -99,9 +99,19 @@ const StyledH1 = styled.h1`
   font-size: 20px;
 `;
 
-const StyledA = styled.a`
+const StyledNavLink = styled(Nav.Link)`
   color: ${LIGHT_PEACH};
   marginright: 6;
   textdecoration: 'none';
   margin: 0 10px;
+  border: 2px #ffdfc3 solid;
+  border-radius: 8px;
+  font-size: 16px;
+  padding: 8px;
+
+  &:hover {
+    text-decoration: none;
+    color: #30475e !important;
+    background-color: #ffdfc3 !important;
+  }
 `;
