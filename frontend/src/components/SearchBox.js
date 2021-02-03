@@ -59,12 +59,6 @@ const StyledFormControl = styled(Form.Control)`
 
   &:-webkit-autofill,
   &:-webkit-autofill:hover, 
-  &:-webkit-autofill:focus,
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
-  &:-webkit-autofill:focus,
-  &:-webkit-autofill,
-  &:-webkit-autofill:hover,
   &:-webkit-autofill:focus {
     -webkit-text-fill-color: ${LIGHT_PEACH};
     -webkit-box-shadow: 0 0 0px 1000px #000 inset;

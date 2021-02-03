@@ -45,18 +45,17 @@ const Header = () => {
                   {userInfo ? `CART` : `SIGN UP`}
                 </StyledNavLink>
                 {userInfo ? (
-                  <NavDropdown
+                  <StyledNavDropDown
                     title={userInfo.name}
                     id="username"
-                    style={{ fontSize: 16 }}
                   >
-                    <LinkContainer to="/profile">
-                      <NavDropdown.Item>Profile</NavDropdown.Item>
-                    </LinkContainer>
-                    <NavDropdown.Item onClick={logoutHandler}>
+                    <StyledLinkContainer to="/profile">
+                      <StyledNavDropDownItem>Profile</StyledNavDropDownItem>
+                    </StyledLinkContainer>
+                    <StyledNavDropDownItem onClick={logoutHandler}>
                       Logout
-                    </NavDropdown.Item>
-                  </NavDropdown>
+                    </StyledNavDropDownItem>
+                  </StyledNavDropDown>
                 ) : (
                   <>
                     <StyledNavLink as={Link} to="/login">
@@ -65,17 +64,17 @@ const Header = () => {
                   </>
                 )}
                 {userInfo && userInfo.isAdmin && (
-                  <NavDropdown title="Admin" id="adminmenu">
-                    <LinkContainer to="/admin/userlist">
-                      <NavDropdown.Item>Users</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/admin/productlist">
-                      <NavDropdown.Item>Products</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/admin/orderlist">
-                      <NavDropdown.Item>Orders</NavDropdown.Item>
-                    </LinkContainer>
-                  </NavDropdown>
+                  <StyledNavDropDown title="Admin" id="adminmenu">
+                    <StyledLinkContainer to="/admin/userlist">
+                      <StyledNavDropDownItem>Users</StyledNavDropDownItem>
+                    </StyledLinkContainer>
+                    <StyledLinkContainer to="/admin/productlist">
+                      <StyledNavDropDownItem>Products</StyledNavDropDownItem>
+                    </StyledLinkContainer>
+                    <StyledLinkContainer to="/admin/orderlist">
+                      <StyledNavDropDownItem>Orders</StyledNavDropDownItem>
+                    </StyledLinkContainer>
+                  </StyledNavDropDown>
                 )}
               </Nav>
             </Navbar.Collapse>
@@ -90,6 +89,7 @@ export default Header;
 
 const StyledNavbar = styled(Navbar)`
   background-color: ${DARK_BLUE_2};
+  padding: 16px !important;
 `;
 
 const StyledH1 = styled.h1`
@@ -113,5 +113,27 @@ const StyledNavLink = styled(Nav.Link)`
     text-decoration: none;
     color: #30475e !important;
     background-color: #ffdfc3 !important;
+  }
+`;
+
+const StyledNavDropDown = styled(NavDropdown)`
+  background-color: ${DARK_BLUE_2} !important;
+  font-size: 16px;
+  border: none !important;
+  margin-right: 6px !important;
+`;
+
+const StyledLinkContainer = styled(LinkContainer)`
+  background-color: ${DARK_BLUE_2};
+`;
+
+const StyledNavDropDownItem = styled(NavDropdown.Item)`
+  background-color: ${DARK_BLUE_2};
+  color: ${LIGHT_PEACH};
+  font-size: 16px;
+
+  &:hover{
+    background-color: ${LIGHT_PEACH};
+    color: ${DARK_BLUE_2};
   }
 `;

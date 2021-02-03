@@ -205,8 +205,9 @@ const RegisterScreen = ({ location, history }) => {
                 to={
                   redirect ? `/login?redirect=${redirect}` : '/login'
                 }
+                style={{ color: 'blue', textDecoration: 'underline' }}
               >
-                <u style={{ color: 'blue' }}>Login</u>
+                Login
               </Link>
             </Col>
           </Row>

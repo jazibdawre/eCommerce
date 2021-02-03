@@ -70,8 +70,8 @@ const LoginScreen = ({ location, history }) => {
         <div style={{ textAlign: 'center' }}>
           <Row className="py-3">
             <Col>
-              <a href="/" style={{ color: 'black' }}>
-                <u>Forgot Password?</u>
+              <a href="/" style={{ color: 'black', textDecoration: 'underline' }}>
+                Forgot Password?
               </a>
             </Col>
           </Row>
@@ -85,8 +85,9 @@ const LoginScreen = ({ location, history }) => {
                     ? `/register?redirect=${redirect}`
                     : '/register'
                 }
+                style={{ color: 'blue', textDecoration: 'underline' }}
               >
-                <u style={{ color: 'blue' }}>Sign Up</u>
+                Sign Up
               </Link>
             </Col>
           </Row>
