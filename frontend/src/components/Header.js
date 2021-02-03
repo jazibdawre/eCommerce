@@ -50,7 +50,9 @@ const Header = () => {
                     id="username"
                   >
                     <StyledLinkContainer to="/profile">
-                      <StyledNavDropDownItem>Profile</StyledNavDropDownItem>
+                      <StyledNavDropDownItem>
+                        Profile
+                      </StyledNavDropDownItem>
                     </StyledLinkContainer>
                     <StyledNavDropDownItem onClick={logoutHandler}>
                       Logout
@@ -66,13 +68,19 @@ const Header = () => {
                 {userInfo && userInfo.isAdmin && (
                   <StyledNavDropDown title="Admin" id="adminmenu">
                     <StyledLinkContainer to="/admin/userlist">
-                      <StyledNavDropDownItem>Users</StyledNavDropDownItem>
+                      <StyledNavDropDownItem>
+                        Users
+                      </StyledNavDropDownItem>
                     </StyledLinkContainer>
                     <StyledLinkContainer to="/admin/productlist">
-                      <StyledNavDropDownItem>Products</StyledNavDropDownItem>
+                      <StyledNavDropDownItem>
+                        Products
+                      </StyledNavDropDownItem>
                     </StyledLinkContainer>
                     <StyledLinkContainer to="/admin/orderlist">
-                      <StyledNavDropDownItem>Orders</StyledNavDropDownItem>
+                      <StyledNavDropDownItem>
+                        Orders
+                      </StyledNavDropDownItem>
                     </StyledLinkContainer>
                   </StyledNavDropDown>
                 )}
@@ -132,7 +140,7 @@ const StyledNavDropDownItem = styled(NavDropdown.Item)`
   color: ${LIGHT_PEACH};
   font-size: 16px;
 
-  &:hover{
+  &:hover {
     background-color: ${LIGHT_PEACH};
     color: ${DARK_BLUE_2};
   }

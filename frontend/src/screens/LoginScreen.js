@@ -70,7 +70,13 @@ const LoginScreen = ({ location, history }) => {
         <div style={{ textAlign: 'center' }}>
           <Row className="py-3">
             <Col>
-              <a href="/" style={{ color: 'black', textDecoration: 'underline' }}>
+              <a
+                href="/"
+                style={{
+                  color: 'black',
+                  textDecoration: 'underline',
+                }}
+              >
                 Forgot Password?
               </a>
             </Col>
