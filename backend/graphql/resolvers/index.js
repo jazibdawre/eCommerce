@@ -18,8 +18,6 @@ import {
   getOrders,
 } from './order.js';
 
-import { questions, question, editQuestions } from './chatbot.js';
-
 import {
   createProduct,
   getProduct,
@@ -27,6 +25,10 @@ import {
   updateProduct,
   deleteProduct,
 } from './products.js';
+
+import { questions, question, editQuestions } from './chatbot.js';
+
+import { searchProduct } from './search.js';
 
 export default {
   //orders
@@ -55,4 +57,6 @@ export default {
   getProductById: getProductById,
   updateProduct: updateProduct,
   deleteProduct: deleteProduct,
+  //search
+  searchProduct: searchProduct,
 };

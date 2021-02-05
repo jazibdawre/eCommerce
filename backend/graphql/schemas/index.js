@@ -164,6 +164,7 @@ export default buildSchema(`
         getProduct(name: String!): [Product!]!
         getProductById(id: ID!): [Product!]!
         deleteProduct(id: ID!): Product!
+        searchProduct(searchTerm: String!): [Product!]!
     }
 
     type rootMutation {
