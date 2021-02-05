@@ -132,7 +132,6 @@ export default buildSchema(`
     }
     
     input OrderInput {
-        user:            ID!
         orderItems:      [OrderItemsInput!]!
         shippingAddress: ShippingAddressInput!
         paymentMethod:   String!
@@ -154,7 +153,7 @@ export default buildSchema(`
 
     type rootQuery {
         orders: [Order!]!
-        myorders(userId: ID!): [Order!]!
+        myorders: [Order!]!
         orderById(orderId: ID!): Order!
         questions: [Question]
         question(level: String!, index: String!): Question

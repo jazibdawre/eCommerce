@@ -10,9 +10,9 @@ let tokenString, userId, productId, productName, categoryId;
 productId = productName = 'if you see this, createProductQuery has failed';
 
 // Not implemented: Get all products, get products by category, get all categories, add reviews to product
+// Their corressponding tests are commented out until implemented
 // Also, for all queries, subdocuments are not populated, remove their details from graphql queries until implemented
 // This unit is not authenticated, all types of users should have same results
-// Their corressponding tests are commented out until implemented
 
 // Temporary manual declaration until implemented
 categoryId = '6016f6f44d1c3300f0a72dea';
