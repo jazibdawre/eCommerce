@@ -15,7 +15,7 @@ import graphqlResolvers from './graphql/resolvers/index.js';
 
 dotenv.config();
 
-connectDB();
+await connectDB();
 
 const app = express();
 
@@ -59,7 +59,7 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(
+export const server = app.listen(
   PORT,
   console.log(
     `Server running in ${process.env.NODE_ENV} mode on port ${PORT}`.yellow.bold
@@ -67,5 +67,5 @@ app.listen(
 );
 
 export default {
-  app
-}
+  app,
+};

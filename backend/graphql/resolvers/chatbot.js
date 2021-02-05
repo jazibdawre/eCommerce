@@ -1,4 +1,4 @@
-import Question from '../../models/question.js';
+import Question from '../../models/questionModel.js';
 
 const questions = async (args, req) => {
   try {
@@ -11,7 +11,10 @@ const questions = async (args, req) => {
 
 const question = async (args, req) => {
   try {
-    const question = await Question.findOne({ level: args.level, index: args.index });
+    const question = await Question.findOne({
+      level: args.level,
+      index: args.index,
+    });
     return question;
   } catch (err) {
     throw err;
@@ -24,10 +27,10 @@ const editQuestions = async (args, req) => {
   // }
   try {
     const { details } = args;
-  
+
     await Question.find({}).deleteMany({});
 
-    for(let i=0;i<details.length;i++) {
+    for (let i = 0; i < details.length; i++) {
       const newQuestions = new Question({
         msg: details[i].msg,
         level: details[i].level,
@@ -36,14 +39,10 @@ const editQuestions = async (args, req) => {
       await newQuestions.save();
     }
 
-    return {msg:"success"};
+    return { msg: 'success' };
   } catch (err) {
     throw err;
   }
 };
 
-export {
-  questions,
-  question,
-  editQuestions,
-};
+export { questions, question, editQuestions };
