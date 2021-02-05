@@ -5,6 +5,7 @@ export default buildSchema(`
     type User {
         _id: ID!
         name: String!
+        phoneNo: Int!
         email: String!
         password: String!
         isAdmin: Boolean!
@@ -75,6 +76,7 @@ export default buildSchema(`
 
     input UserInput {
         name: String!
+        phoneNo: Int!
         email: String!
         password: String!
         isAdmin: Boolean
@@ -82,6 +84,7 @@ export default buildSchema(`
 
     input UpdateUserInput {
         name: String
+        phoneNo: Int!
         email: String
         password: String
         isAdmin: Boolean
