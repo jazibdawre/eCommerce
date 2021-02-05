@@ -65,6 +65,7 @@ export default buildSchema(`
     type Question {
         _id: ID
         msg: String
+        info: String
         level: String
         index: String
     }
@@ -147,6 +148,7 @@ export default buildSchema(`
 
     input QuestionInput {
         msg: String
+        info: String
         level: String
         index: String
     }
