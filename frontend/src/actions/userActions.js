@@ -35,15 +35,46 @@ export const login = (email, password) => async (dispatch) => {
 
     const config = {
       headers: {
+        'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
+      'Access-Control-Allow-Origin':  '*',
+      'Access-Control-Allow-Credentials': true,
     };
 
-    const { data } = await axios.post(
-      '/api/users/login',
-      { email, password },
+    const loginGqlQuery = `
+      mutation User($email: String!, $password: String!){
+        User(email: $email, password: $password) {
+          _id
+          name
+          email
+          password
+          isAdmin
+          token
+        }
+      }
+    `;
+
+    const { data }  = await axios.post(
+      'http://localhost:5000/graphql',
+      {
+        query: loginGqlQuery,
+        variables: {
+          email: email,
+          password: password
+        }
+      },
       config,
     );
+    console.log(data);
+
+    /*const [userActionLogin, { data }] = useMutation('/api/users/login/qraphql', {
+      query: loginGqlQuery,
+      variables: {
+        email: email,
+        password: password
+      }
+    },config);*/
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
