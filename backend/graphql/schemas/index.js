@@ -70,6 +70,11 @@ export default buildSchema(`
         level: String
         index: String
     }
+
+    type Category {
+        _id: ID!
+        name: String!
+    }
     
     type Response {
         msg: String!
@@ -162,6 +167,7 @@ export default buildSchema(`
         orderById(orderId: ID!): Order!
         questions: [Question]
         question(level: String!, index: String!): Question
+        categories: [Category]
         authUser(email: String!, password: String!): User!
         getUserProfile: User!
         getUsers: [User!]!
@@ -177,6 +183,9 @@ export default buildSchema(`
         updateOrderToPaid(orderId: ID!, paymentResult: PaymentResultInput!): Order!
         updateOrderToDelivered(orderId: ID!): Order!
         editQuestions(details: [QuestionInput]!): Response!
+        createCategory(name: String!): Response!
+        updateCategory(name: String!, newName: String!): Response!
+        deleteCategory(name: String!): Response!
         registerUser(userInput: UserInput!): User!
         updateUserProfile(userInput: UpdateUserInput!): User!
         updateUser(userId: ID!, userInput: UpdateUserInput!): User!
