@@ -1,4 +1,3 @@
-import { useQuery } from '@apollo/client';
 import {
   CHATBOT_CREATE_FAIL,
   CHATBOT_CREATE_SUCCESS,
@@ -10,8 +9,10 @@ export const chatbotReducer = (state = {}, action) => {
     case CHATBOT_CREATE_REQUEST:
       return { loading: true };
     case CHATBOT_CREATE_SUCCESS:
-      return { loading: false, error: action.payload };
+      console.log(action.payload);
+      return { loading: false, data: action.payload };
     case CHATBOT_CREATE_FAIL:
+      console.log(action.payload);
       return { loading: false, error: action.payload };
     default:
       return state;

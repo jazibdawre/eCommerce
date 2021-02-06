@@ -5,12 +5,14 @@ import {
   CHATBOT_CREATE_REQUEST,
 } from '../constants/chatbotConstants';
 
-export const chatbot = (query, option) => async (dispatch) => {
+export const getChat = (query) => async (dispatch) => {
   dispatch({
     type: CHATBOT_CREATE_REQUEST,
   });
 
   const { loading, error, data } = useQuery(query);
+
+  console.log(data);
 
   if (error) {
     dispatch({

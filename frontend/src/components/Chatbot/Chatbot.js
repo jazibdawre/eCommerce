@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Container } from 'react-bootstrap';
+import { useSelector, useDispatch } from 'react-redux';
+import { gql, useQuery } from '@apollo/client';
 import {
   CARD_STYLES,
   FOOTER_STYLES,
@@ -12,6 +14,7 @@ import {
 import Buttons from './components/Buttons';
 import Message from './components/Message';
 import Robot from './components/Robot';
+import { getChat } from '../../actions/chatbotAction';
 
 const options = [
   'Return order',
@@ -28,6 +31,7 @@ export default function Chatbot() {
   const [chats, setChats] = useState([
     { type: 'robot', message: 'Welcome to chatbot' },
   ]);
+  const dispatch = useDispatch();
 
   const bottomRef = useRef();
 
@@ -47,6 +51,22 @@ export default function Chatbot() {
       inline: 'start',
     });
   };
+
+  const query = gql`
+    query QUESTIONSQuery {
+      questions {
+        msg
+        level
+        index
+      }
+    }
+  `;
+
+  const vidhan = useQuery(query);
+
+  useEffect(() => {
+    console.log(vidhan);
+  }, [vidhan]);
 
   useEffect(() => {
     scrollToBottom();
@@ -114,10 +134,7 @@ export default function Chatbot() {
               return <></>;
             })}
           </Container>
-          <div
-            className="ml-2 mb-2"
-            style={FOOTER_STYLES}
-          >
+          <div className="ml-2 mb-2" style={FOOTER_STYLES}>
             <small className="ml-2">
               Choose from one of the replies below
             </small>
