@@ -1,4 +1,5 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
+import mongoose_fuzzy_searching from 'mongoose-fuzzy-searching';
 
 const reviewSchema = mongoose.Schema(
   {
@@ -14,7 +15,7 @@ const reviewSchema = mongoose.Schema(
   {
     timestamps: true,
   }
-)
+);
 
 const productSchema = mongoose.Schema(
   {
@@ -68,8 +69,24 @@ const productSchema = mongoose.Schema(
   {
     timestamps: true,
   }
-)
+);
 
-const Product = mongoose.model('Product', productSchema)
+productSchema.plugin(mongoose_fuzzy_searching, {
+  fields: [
+    {
+      name: 'name',
+      minSize: 2,
+      weight: 5,
+    },
+    {
+      name: 'brand',
+      minSize: 3,
+      weight: 1,
+      prefixOnly: true,
+    },
+  ],
+});
 
-export default Product
+const Product = mongoose.model('Product', productSchema);
+
+export default Product;
