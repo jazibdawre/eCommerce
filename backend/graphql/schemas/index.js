@@ -174,6 +174,12 @@ export default buildSchema(`
         index: String
     }
 
+    input FilterInput {
+        brand: String
+        price: String
+        rating: String
+    }
+
     type rootQuery {
         orders: [Order!]!
         myorders: [Order!]!
@@ -189,6 +195,7 @@ export default buildSchema(`
         getProductById(id: ID!): [Product!]!
         deleteProduct(id: ID!): Product!
         searchProduct(searchTerm: String!): [Product!]!
+        filterProducts(filters: FilterInput): [Product!]!
     }
 
     type rootMutation {

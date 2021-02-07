@@ -39,6 +39,8 @@ import {
   deleteCategory 
 } from './category.js';
 
+import { filterProducts } from './productFilter.js';
+
 import { searchProduct } from './search.js';
 
 export default {
@@ -58,6 +60,8 @@ export default {
   categories: categories, 
   updateCategory: updateCategory, 
   deleteCategory: deleteCategory,
+  //filterProducts
+  filterProducts: filterProducts,
   //users
   authUser: authUser,
   registerUser: registerUser,
