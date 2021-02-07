@@ -24,6 +24,19 @@ export default buildSchema(`
         numReviews: Int,
         description: String!
     }
+
+    type ProductResponse {
+        _id: ID!
+        name: String!,
+        price: Float!,
+        user: User!,
+        image: String!,
+        brand: ID!,
+        category: ID!,
+        countInStock: Int!,
+        numReviews: Int,
+        description: String!
+    }
     
     type OrderItems {
         name: String!
@@ -190,8 +203,8 @@ export default buildSchema(`
         updateUserProfile(userInput: UpdateUserInput!): User!
         updateUser(userId: ID!, userInput: UpdateUserInput!): User!
         deleteUser(userId: ID!): Response!
-        createProduct(productInput: ProductInput):  Product!
-        updateProduct(productId: ID!, updateProduct: updateProduct): Product!
+        createProduct(productInput: ProductInput):  ProductResponse!
+        updateProduct(productId: ID!, updateProduct: updateProduct): ProductResponse!
     }
 
     schema {
