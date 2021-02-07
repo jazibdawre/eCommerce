@@ -33,6 +33,7 @@ const editQuestions = async (args, req) => {
     for (let i = 0; i < details.length; i++) {
       const newQuestions = new Question({
         msg: details[i].msg,
+        info: details[i].info,
         level: details[i].level,
         index: details[i].index,
       });

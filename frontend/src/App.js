@@ -19,8 +19,6 @@ import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import OrderListScreen from './screens/OrderListScreen';
 
-import { ApolloClient, InMemoryCache } from '@apollo/client';
-
 const App = () => {
   return (
     <Router>

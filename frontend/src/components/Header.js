@@ -46,7 +46,7 @@ const Header = () => {
                 </StyledNavLink>
                 {userInfo ? (
                   <StyledNavDropDown
-                    title={userInfo.name}
+                    title={userInfo.data.data.authUser.name}
                     id="username"
                   >
                     <StyledLinkContainer to="/profile">
@@ -65,7 +65,7 @@ const Header = () => {
                     </StyledNavLink>
                   </>
                 )}
-                {userInfo && userInfo.isAdmin && (
+                {userInfo && userInfo.data.data.authUser.isAdmin && (
                   <StyledNavDropDown title="Admin" id="adminmenu">
                     <StyledLinkContainer to="/admin/userlist">
                       <StyledNavDropDownItem>

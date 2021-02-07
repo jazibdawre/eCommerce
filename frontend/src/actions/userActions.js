@@ -33,48 +33,30 @@ export const login = (email, password) => async (dispatch) => {
       type: USER_LOGIN_REQUEST,
     });
 
-    const config = {
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      'Access-Control-Allow-Origin':  '*',
-      'Access-Control-Allow-Credentials': true,
-    };
-
-    const loginGqlQuery = `
-      mutation User($email: String!, $password: String!){
-        User(email: $email, password: $password) {
-          _id
-          name
-          email
-          password
-          isAdmin
-          token
-        }
-      }
-    `;
-
-    const { data }  = await axios.post(
+    const data = await axios.post(
       'http://localhost:5000/graphql',
       {
-        query: loginGqlQuery,
-        variables: {
-          email: email,
-          password: password
+        query: `
+        query {
+          authUser(email: "${email}", password: "${password}"){
+            _id
+            name
+            email
+            password
+            isAdmin
+            token
+          }
         }
+      `,
       },
-      config,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     );
-    console.log(data);
 
-    /*const [userActionLogin, { data }] = useMutation('/api/users/login/qraphql', {
-      query: loginGqlQuery,
-      variables: {
-        email: email,
-        password: password
-      }
-    },config);*/
+    console.log(data);
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
@@ -113,17 +95,29 @@ export const register = (name, number, email, password) => async (
       type: USER_REGISTER_REQUEST,
     });
 
-    const config = {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    };
-
     const { data } = await axios.post(
-      '/api/users',
-      { name, number, email, password },
-      config,
+      'http://localhost:5000/graphql',
+      {
+        query: `
+        mutation {
+          registerUser(userInput: {name: "${name}", phoneNo: "${number}", email: "${email}", password: "${password}", isAdmin: "${false}"}){
+            name
+            phoneNo
+            email
+            password
+            isAdmin
+          }
+        }
+        `,
+      },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
     );
+
+    console.log(data);
 
     dispatch({
       type: USER_REGISTER_SUCCESS,

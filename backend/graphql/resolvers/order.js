@@ -47,7 +47,7 @@ const getOrderById = async (args) => {
         'user orderItems.product'
       );
 
-      if (order && order._id == req.user._id) {
+      if (order && order._id === req.user._id) {
         return order;
       } else {
         throw new Error('Order not found');
@@ -67,7 +67,7 @@ const updateOrderToPaid = async (args, req) => {
     if (loggedin(req)) {
       const order = await Order.findById(args.orderId);
 
-      if (order && order._id == req.user._id) {
+      if (order && order._id === req.user._id) {
         order.isPaid = true;
         order.paidAt = Date.now();
         order.paymentResult = args.paymentResult;
