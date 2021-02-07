@@ -1,14 +1,21 @@
 import Product from '../../models/productModel.js';
 import Category from '../../models/categoryModel.js';
+import Brand from '../../models/brandModel.js';
 
 const createProduct = async (args) => {
   try {
+    const newBrand = new Brand({
+      name: args.productInput.brand
+    });
+
+    const resp = await newBrand.save();
+
     const product = new Product({
       name: args.productInput.name,
       price: args.productInput.price,
       user: args.productInput.user,
       image: args.productInput.image,
-      brand: args.productInput.brand,
+      brand: resp._id,
       category: args.productInput.category,
       countInStock: args.productInput.countInStock,
       numReviews: args.productInput.numReviews,
@@ -24,7 +31,9 @@ const createProduct = async (args) => {
 
 const getProduct = async (args) => {
   try {
-    const product = Product.find({ name: args.name });
+    const product = Product
+                      .find({ name: args.name })
+                      .populate('brand');
     if (product) {
       return product;
     } else {
@@ -39,7 +48,7 @@ const getProduct = async (args) => {
 
 const getProductById = async (args) => {
   try {
-    const product = Product.find({ _id: args.id });
+    const product = Product.find({ _id: args.id }).populate('brand');
     if (product) {
       return product;
     } else {
@@ -61,8 +70,27 @@ const updateProduct = async (args) => {
       res.status(404);
       throw new Error('Product not found');
     }
+
+    await Brand.deleteOne({ _id: product.brand });
+
+    const newBrand = new Brand({
+      name: args.updateProduct.brand
+    });
+
+    const resp = await newBrand.save();
+
+    const newUpdatedProduct = {
+      name: args.updateProduct.name,
+      price: args.updateProduct.price,
+      image: args.updateProduct.image,
+      brand: resp._id,
+      category: args.updateProduct.category,
+      countInStock: args.updateProduct.countInStock,
+      description: args.updateProduct.description,
+    };
+
     await Product.findByIdAndUpdate(args.productId, {
-      $set: args.updateProduct,
+      $set: newUpdatedProduct,
     });
     const updatedProduct = await Product.findById(args.productId);
     console.log(updatedProduct);
@@ -77,6 +105,7 @@ const deleteProduct = async (args) => {
   try {
     const product = await Product.find({ _id: args.id });
     if (product) {
+      await Brand.deleteOne({ _id: product.brand });
       const deleted = await Product.findByIdAndDelete(args.id);
       // console.log(deleted);
       return { ...deleted._doc };

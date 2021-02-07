@@ -24,6 +24,19 @@ export default buildSchema(`
         numReviews: Int,
         description: String!
     }
+
+    type ProductResponse {
+        _id: ID!
+        name: String!,
+        price: Float!,
+        user: User!,
+        image: String!,
+        brand: ID!,
+        category: ID!,
+        countInStock: Int!,
+        numReviews: Int,
+        description: String!
+    }
     
     type OrderItems {
         name: String!
@@ -69,6 +82,11 @@ export default buildSchema(`
         info: String
         level: String
         index: String
+    }
+
+    type Category {
+        _id: ID!
+        name: String!
     }
     
     type Response {
@@ -162,6 +180,7 @@ export default buildSchema(`
         orderById(orderId: ID!): Order!
         questions: [Question]
         question(level: String!, index: String!): Question
+        categories: [Category]
         authUser(email: String!, password: String!): User!
         getUserProfile: User!
         getUsers: [User!]!
@@ -177,12 +196,15 @@ export default buildSchema(`
         updateOrderToPaid(orderId: ID!, paymentResult: PaymentResultInput!): Order!
         updateOrderToDelivered(orderId: ID!): Order!
         editQuestions(details: [QuestionInput]!): Response!
+        createCategory(name: String!): Response!
+        updateCategory(name: String!, newName: String!): Response!
+        deleteCategory(name: String!): Response!
         registerUser(userInput: UserInput!): User!
         updateUserProfile(userInput: UpdateUserInput!): User!
         updateUser(userId: ID!, userInput: UpdateUserInput!): User!
         deleteUser(userId: ID!): Response!
-        createProduct(productInput: ProductInput):  Product!
-        updateProduct(productId: ID!, updateProduct: updateProduct): Product!
+        createProduct(productInput: ProductInput):  ProductResponse!
+        updateProduct(productId: ID!, updateProduct: updateProduct): ProductResponse!
     }
 
     schema {
