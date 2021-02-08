@@ -1,100 +1,146 @@
-import Category from '../../models/category.js';
 import Product from '../../models/productModel.js';
+import Category from '../../models/categoryModel.js';
+import Brand from '../../models/brandModel.js';
+import { admin, loggedin } from '../../utils/verifyUser.js';
 
-const createProduct = async (args) => {
-    try {
-        const product = new Product({
-            name: args.productInput.name,
-            price: args.productInput.price,
-            user: args.productInput.user,
-            image: args.productInput.image,
-            brand: args.productInput.brand,
-            category: args.productInput.category,
-            countInStock: args.productInput.countInStock,
-            numReviews: args.productInput.numReviews,
-            description: args.productInput.description,
-        }); 
-        const res = await product.save();
-        return res;
-    } catch (err) {
-        console.log(err);
-        throw err;
+//Create new product
+//private/admin
+const createProduct = async (args, req) => {
+  try {
+    if(admin(req)) {
+      const newBrand = new Brand({
+        name: args.productInput.brand
+      });
+
+      const resp = await newBrand.save();
+
+      const product = new Product({
+        name: args.productInput.name,
+        price: args.productInput.price,
+        user: args.productInput.user,
+        image: args.productInput.image,
+        brand: resp._id,
+        category: args.productInput.category,
+        countInStock: args.productInput.countInStock,
+        numReviews: args.productInput.numReviews,
+        description: args.productInput.description,
+      });
+      const res = await product.save();
+      return res;
     }
-}
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
 
+
+//get product
+//public
 const getProduct = async (args) => {
-    try {
-        const product = Product.find({name: args.name});
-        if (!product) {
-            throw new Error('Product not found')
-        } 
-        return product;
-    } catch (err) {
-        console.log(err);
-        throw err;
+  try {
+    const product = Product
+                    .find({ name: args.name })
+                    .populate('brand');
+    if (product) {
+      return product;
+    } else {
+      res.status(404);
+      throw new Error('Product not found');
     }
-}
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
 
+//get product by id
+//public
 const getProductById = async (args) => {
-    try {
-        const product = Product.find({_id: args.id});
-        if (!product) {
-            throw new Error('Product not found')
-        } 
-        return product;
-    } catch (err) {
-        console.log(err);
-        throw err;
+  try {
+    const product = Product.find({ _id: args.id }).populate('brand');
+    if (product) {
+      return product;
+    } else {
+      res.status(404);
+      throw new Error('Product not found');
     }
-}
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
 
-const getProductByCategory = async (args) => {
-    try {
-        const products = await Product.find({category: args.id});
-        if(!products) {
-            throw new Error('Product not found')
-        }
-        return products;
-    } catch (err) {
-        console.log(err);
-        throw err;
-    }
-}
-
+//update product
+//private/admin
 const updateProduct = async (args) => {
-    try {
-        const product = await Product.findById(args.productId);
-        if(!product) {
-            throw new Error('Product not found')
-        }
-        await Product.findByIdAndUpdate(args.productId, {$set: args.updateProduct});
-        const updatedProduct = await Product.findById(args.productId);
-        return updatedProduct;
-    } catch (err) {
-        console.log(err);
-        throw err;
-    }
-}
+  try {
+    if(admin(req)) {
+      // console.log(args.productId);
+      // console.log(args);
+      const product = await Product.findById(args.productId);
+      if (!product) {
+        res.status(404);
+        throw new Error('Product not found');
+      }
 
+      await Brand.deleteOne({ _id: product.brand });
+
+      const newBrand = new Brand({
+        name: args.updateProduct.brand
+      });
+
+      const resp = await newBrand.save();
+
+      const newUpdatedProduct = {
+        name: args.updateProduct.name,
+        price: args.updateProduct.price,
+        image: args.updateProduct.image,
+        brand: resp._id,
+        category: args.updateProduct.category,
+        countInStock: args.updateProduct.countInStock,
+        description: args.updateProduct.description,
+      };
+
+      await Product.findByIdAndUpdate(args.productId, {
+        $set: newUpdatedProduct,
+      });
+      const updatedProduct = await Product.findById(args.productId);
+      console.log(updatedProduct);
+      return updatedProduct;
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
+//delete product
+//private/admin
 const deleteProduct = async (args) => {
-    try {
-        const product = await Product.find({_id: args.id});
-        if(!product) {
-            throw new Error('Product not found')
-        }
+  try {
+    if(admin(req)) {
+      const product = await Product.find({ _id: args.id });
+      if (product) {
+        await Brand.deleteOne({ _id: product.brand });
         const deleted = await Product.findByIdAndDelete(args.id);
-        return {...deleted._doc};
-    } catch (err) {
-        console.log(err);
-        throw err;
+        // console.log(deleted);
+        return { ...deleted._doc };
+      } else {
+        res.status(404);
+        throw new Error('Product not found');
+      }
     }
-}
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
 
-export  {
-    createProduct,
-    getProduct,
-    getProductById,
-    getProductByCategory,
-    updateProduct,
-    deleteProduct
-}
+export {
+  createProduct,
+  getProduct,
+  getProductById,
+  updateProduct,
+  deleteProduct,
+};

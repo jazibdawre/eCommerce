@@ -4,17 +4,31 @@ export default buildSchema(`
     type User {
         _id: ID!
         name: String!
+        phoneNo: Int!
         email: String!
         password: String!
         isAdmin: Boolean!
         token: String
     }
     type Product {
+        _id: ID!
         name: String!,
         price: Float!,
-        user: ID!,
+        user: User!,
         image: String!,
         brand: String!,
+        category: ID!,
+        countInStock: Int!,
+        numReviews: Int,
+        description: String!
+    }
+    type ProductResponse {
+        _id: ID!
+        name: String!,
+        price: Float!,
+        user: User!,
+        image: String!,
+        brand: ID!,
         category: ID!,
         countInStock: Int!,
         numReviews: Int,
@@ -26,7 +40,7 @@ export default buildSchema(`
         qty: Float!
         image: String!
         price: Float!
-        product: ID!
+        product: Product!
     }
     type ShippingAddress {
         address: String!
@@ -37,7 +51,7 @@ export default buildSchema(`
     type PaymentResult {
         id: String!
         status: String!
-        upString_time: String!
+        update_time: String!
         email_address: String!
     }
     type Order {
@@ -59,8 +73,13 @@ export default buildSchema(`
     type Question {
         _id: ID
         msg: String
+        info: String
         level: String
         index: String
+    }
+    type Category {
+        _id: ID!
+        name: String!
     }
     
     type Response {
@@ -68,12 +87,14 @@ export default buildSchema(`
     }
     input UserInput {
         name: String!
+        phoneNo: Int!
         email: String!
         password: String!
         isAdmin: Boolean
     }
     input UpdateUserInput {
         name: String
+        phoneNo: Int!
         email: String
         password: String
         isAdmin: Boolean
@@ -106,7 +127,7 @@ export default buildSchema(`
     input PaymentResultInput {
         id: String!
         status: String!
-        upString_time: String!
+        update_time: String!
         email_address: String!
     }
     input updateProduct {
@@ -120,7 +141,6 @@ export default buildSchema(`
     }
     
     input OrderInput {
-        user:            ID!
         orderItems:      [OrderItemsInput!]!
         shippingAddress: ShippingAddressInput!
         paymentMethod:   String!
@@ -135,36 +155,46 @@ export default buildSchema(`
     }
     input QuestionInput {
         msg: String
+        info: String
         level: String
         index: String
     }
+    input FilterInput {
+        brand: String
+        price: String
+        rating: String
+    }
     type rootQuery {
         orders: [Order!]!
-        myorders(userId: ID!): [Order!]!
+        myorders: [Order!]!
         orderById(orderId: ID!): Order!
         questions: [Question]
         question(level: String!, index: String!): Question
+        categories: [Category]
         authUser(email: String!, password: String!): User!
         getUserProfile: User!
         getUsers: [User!]!
         getUserById(userId: ID!): User!
-        product: [Product!]!
         getProduct(name: String!): [Product!]!
         getProductById(id: ID!): [Product!]!
-        getProductByCategory(id: ID!): [Product!]!
         deleteProduct(id: ID!): Product!
+        searchProduct(searchTerm: String!): [Product!]!
+        filterProducts(filters: FilterInput): [Product!]!
     }
     type rootMutation {
         createOrder(orderInput: OrderInput): Order!
-        updateOrderToPaid(orderId: ID!): Order!
+        updateOrderToPaid(orderId: ID!, paymentResult: PaymentResultInput!): Order!
         updateOrderToDelivered(orderId: ID!): Order!
         editQuestions(details: [QuestionInput]!): Response!
+        createCategory(name: String!): Response!
+        updateCategory(name: String!, newName: String!): Response!
+        deleteCategory(name: String!): Response!
         registerUser(userInput: UserInput!): User!
         updateUserProfile(userInput: UpdateUserInput!): User!
         updateUser(userId: ID!, userInput: UpdateUserInput!): User!
         deleteUser(userId: ID!): Response!
-        createProduct(productInput: ProductInput):  Product!
-        updateProduct(productId: ID!, updateProduct: updateProduct): Product!
+        createProduct(productInput: ProductInput):  ProductResponse!
+        updateProduct(productId: ID!, updateProduct: updateProduct): ProductResponse!
     }
     schema {
         query: rootQuery

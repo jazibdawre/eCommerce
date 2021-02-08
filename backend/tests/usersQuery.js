@@ -3,7 +3,8 @@ const registerUserQuery = {
         mutation { 
             registerUser(userInput: {
                 name: "tanay1",
-                email: "tan",
+                email: "tall1q",
+                phoneNo: 911877,
                 password: "1111",
                 isAdmin: false
             }) {
@@ -57,7 +58,7 @@ const getUserByIdQuery = {
 const deleteUserQuery = {
     query: `
         mutation {
-            deleteUser(userId: "60181e8cca91ee5898bfc543"){
+            deleteUser(userId: "60181cadfbea5b464c690e43"){
                 msg
             }
         }
@@ -68,7 +69,8 @@ const updateUserProfileQuery = {
     query: `
         mutation{
                 updateUserProfile(userInput: {
-                name: "qwerty"
+                name: "qwerty",
+                phoneNo: 911877
             }) {
                 name
             }
@@ -82,7 +84,8 @@ const updateUserQuery = {
             updateUser(
                 userId: "60180e83e8c7272ca09fa574",
                 userInput: {
-                    name: "qwerty"
+                    name: "qwerty",
+                    phoneNo: 911877
                 }
             ) {
                 name
