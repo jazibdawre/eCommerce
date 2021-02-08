@@ -58,7 +58,7 @@ const registerUser = async (args, { req, redis }) => {
 const getUserProfile = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
-      const user = await User.findById(req.user._id);
+      const user = await User.findById(req.user._id).select('-password');
 
       if (user) {
         return {
@@ -94,6 +94,7 @@ const updateUserProfile = async (args, { req, redis }) => {
 
         return {
           ...updatedUser._doc,
+          password: null,
           token: generateToken(updatedUser._id),
         };
       } else {
@@ -111,7 +112,7 @@ const updateUserProfile = async (args, { req, redis }) => {
 const getUsers = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
-      const users = await User.find({});
+      const users = await User.find({}).select('-password');
       return users;
     }
   } catch (err) {
@@ -176,6 +177,7 @@ const updateUser = async (args, { req, redis }) => {
 
         return {
           ...updatedUser._doc,
+          password: null,
         };
       } else {
         throw new Error('User not found');
