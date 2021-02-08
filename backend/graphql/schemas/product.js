@@ -5,21 +5,9 @@ export const ProductSchema = `
         price: Float!,
         user: User!,
         image: String!,
-        brand: String!,
-        category: ID!,
-        countInStock: Int!,
-        numReviews: Int,
-        description: String!
-    }
-
-    type ProductResponse {
-        _id: ID!
-        name: String!,
-        price: Float!,
-        user: User!,
-        image: String!,
-        brand: ID!,
-        category: ID!,
+        brand: Brand!,
+        category: Category!,
+        subcategory: SubCategory!,
         countInStock: Int!,
         numReviews: Int,
         description: String!
@@ -31,7 +19,8 @@ export const ProductSchema = `
         user: ID!,
         image: String!,
         brand: String!,
-        category: String!,
+        category: ID!,
+        subcategory: ID!,
         countInStock: Int!,
         numReviews: Int,
         description: String!
@@ -42,7 +31,8 @@ export const ProductSchema = `
         price: Float,
         image: String,
         brand: String,
-        category: String,
+        category: ID,
+        subcategory: ID,
         countInStock: Int,
         description: String,
     }
