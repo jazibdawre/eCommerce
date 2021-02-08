@@ -16,11 +16,14 @@ const createProduct = async (args, req) => {
 
       const product = new Product({
         name: args.productInput.name,
+        discount: args.productInput.discount,
         price: args.productInput.price,
+        discountedPrice: ((100-args.productInput.discount)*args.productInput.price)/100,
         user: args.productInput.user,
         image: args.productInput.image,
         brand: resp._id,
         category: args.productInput.category,
+        new: args.productInput.new,
         countInStock: args.productInput.countInStock,
         numReviews: args.productInput.numReviews,
         description: args.productInput.description,
@@ -70,6 +73,24 @@ const getProductById = async (args) => {
     throw err;
   }
 };
+
+//new products
+//public
+const getNewProducts = async(args) => {
+  try {
+    const product = await Product.find({new: true});
+    if (product) {
+      console.log(product);
+      return product;
+    } else {
+      res.status(404);
+      throw new Error('Product not found');
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
 
 //update product
 //private/admin
@@ -141,6 +162,7 @@ export {
   createProduct,
   getProduct,
   getProductById,
+  getNewProducts,
   updateProduct,
   deleteProduct,
 };

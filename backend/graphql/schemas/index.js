@@ -13,11 +13,14 @@ export default buildSchema(`
     type Product {
         _id: ID!
         name: String!,
+        discount: Float!,
         price: Float!,
+        discountedPrice: Float!,
         user: User!,
         image: String!,
         brand: String!,
         category: ID!,
+        new: Boolean!,
         countInStock: Int!,
         numReviews: Int,
         description: String!
@@ -25,11 +28,14 @@ export default buildSchema(`
     type ProductResponse {
         _id: ID!
         name: String!,
+        discount: Float!,
         price: Float!,
+        discountedPrice: Float!,
         user: User!,
         image: String!,
         brand: ID!,
         category: ID!,
+        new: Boolean!,
         countInStock: Int!,
         numReviews: Int,
         description: String!
@@ -101,11 +107,13 @@ export default buildSchema(`
     }
     input ProductInput {
         name: String!,
+        discount: Float!,
         price: Float!,
         user: ID!,
         image: String!,
         brand: String!,
-        category: String!,
+        category: ID!,
+        new: Boolean!,
         countInStock: Int!,
         numReviews: Int,
         description: String!
@@ -168,6 +176,7 @@ export default buildSchema(`
         orders: [Order!]!
         myorders: [Order!]!
         orderById(orderId: ID!): Order!
+        isDeliverable(shippingAddressInput: ShippingAddressInput): Boolean!,
         questions: [Question]
         question(level: String!, index: String!): Question
         categories: [Category]
@@ -177,6 +186,7 @@ export default buildSchema(`
         getUserById(userId: ID!): User!
         getProduct(name: String!): [Product!]!
         getProductById(id: ID!): [Product!]!
+        getNewProducts: [Product!]!
         deleteProduct(id: ID!): Product!
         searchProduct(searchTerm: String!): [Product!]!
         filterProducts(filters: FilterInput): [Product!]!
