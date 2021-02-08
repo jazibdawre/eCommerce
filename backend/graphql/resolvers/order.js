@@ -1,12 +1,12 @@
 import Order from '../../models/orderModel.js';
 import { loggedin, admin } from '../../utils/verifyUser.js';
-import pincode from "../../pincodes.js";
+import pincode from '../../pincodes.js';
 
 // PS: After .save(), user & product are not populated and can't be queried via graphql
 
 // Create new order
 // Private
-const addOrderItems = async (args, req) => {
+const addOrderItems = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const order = new Order({
@@ -41,7 +41,7 @@ const addOrderItems = async (args, req) => {
 
 // Get order by ID
 // Private
-const getOrderById = async (args, req) => {
+const getOrderById = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const order = await Order.findById(args.orderId).populate(
@@ -63,7 +63,7 @@ const getOrderById = async (args, req) => {
 // Update order to paid
 // Private
 // To be called via payment resolver once implemented
-const updateOrderToPaid = async (args, req) => {
+const updateOrderToPaid = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const order = await Order.findById(args.orderId);
@@ -87,7 +87,7 @@ const updateOrderToPaid = async (args, req) => {
 
 // Update order to delivered
 // Private/Admin
-const updateOrderToDelivered = async (args, req) => {
+const updateOrderToDelivered = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
       const order = await Order.findById(args.orderId);
@@ -110,7 +110,7 @@ const updateOrderToDelivered = async (args, req) => {
 
 // Get logged in user orders
 // Private
-const getMyOrders = async (args, req) => {
+const getMyOrders = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const orders = await Order.find({ user: req.user._id }).populate(
@@ -138,7 +138,7 @@ const getMyOrders = async (args, req) => {
 
 // Get all orders
 // Private/Admin
-const getOrders = async (args, req) => {
+const getOrders = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
       const orders = await Order.find({}).populate('user orderItems.product');
@@ -165,26 +165,26 @@ const getOrders = async (args, req) => {
 //is deliverable
 //private
 const isDeliverable = async (args, req) => {
-  try{
-    if(loggedin(req)) {
+  try {
+    if (loggedin(req)) {
       const pin = args.shippingAddressInput.postalCode;
-      if(pin.length!=6){
-        return false; 
+      if (pin.length != 6) {
+        return false;
       } else {
         var q = false;
         for (var a = 0; a < pincode.pincode.length; a++) {
-          if(pin==pincode.pincode[a]) {
+          if (pin == pincode.pincode[a]) {
             q = true;
           }
         }
         return q;
-      }  
+      }
     }
   } catch (err) {
     console.log(err);
     throw err;
   }
-}
+};
 
 export {
   addOrderItems,

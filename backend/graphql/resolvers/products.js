@@ -3,13 +3,16 @@ import Category from '../../models/categoryModel.js';
 import Brand from '../../models/brandModel.js';
 import { admin, loggedin } from '../../utils/verifyUser.js';
 
-//Create new product
-//private/admin
+// To cache getAllProducts, getAllCategories, getProductByCategories, getProductById
+// redis.set("key", JSON.stringify(obj));
+
+// Create new product
+// private/admin
 const createProduct = async (args, req) => {
   try {
-    if(admin(req)) {
+    if (admin(req)) {
       const newBrand = new Brand({
-        name: args.productInput.brand
+        name: args.productInput.brand,
       });
 
       const resp = await newBrand.save();
@@ -18,7 +21,8 @@ const createProduct = async (args, req) => {
         name: args.productInput.name,
         discount: args.productInput.discount,
         price: args.productInput.price,
-        discountedPrice: ((100-args.productInput.discount)*args.productInput.price)/100,
+        discountedPrice:
+          ((100 - args.productInput.discount) * args.productInput.price) / 100,
         user: args.productInput.user,
         image: args.productInput.image,
         brand: resp._id,
@@ -37,14 +41,13 @@ const createProduct = async (args, req) => {
   }
 };
 
-
-//get product
-//public
-const getProduct = async (args) => {
+// get product
+// public
+const getProduct = async (args, { req, redis }) => {
   try {
-    const product = Product
-                    .find({ name: args.name })
-                    .populate('brand');
+    const product = Product.find({ name: args.name }).populate(
+      'user brand category subcategory'
+    );
     if (product) {
       return product;
     } else {
@@ -57,11 +60,13 @@ const getProduct = async (args) => {
   }
 };
 
-//get product by id
-//public
-const getProductById = async (args) => {
+// get product by id
+// public
+const getProductById = async (args, { req, redis }) => {
   try {
-    const product = Product.find({ _id: args.id }).populate('brand');
+    const product = Product.find({ _id: args.id }).populate(
+      'user brand category subcategory'
+    );
     if (product) {
       return product;
     } else {
@@ -74,11 +79,11 @@ const getProductById = async (args) => {
   }
 };
 
-//new products
-//public
-const getNewProducts = async(args) => {
+// new products
+// public
+const getNewProducts = async (args, { req, redis }) => {
   try {
-    const product = await Product.find({new: true});
+    const product = await Product.find({ new: true });
     if (product) {
       console.log(product);
       return product;
@@ -90,13 +95,13 @@ const getNewProducts = async(args) => {
     console.log(err);
     throw err;
   }
-}
+};
 
-//update product
-//private/admin
-const updateProduct = async (args) => {
+// update product
+// private/admin
+const updateProduct = async (args, { req, redis }) => {
   try {
-    if(admin(req)) {
+    if (admin(req)) {
       // console.log(args.productId);
       // console.log(args);
       const product = await Product.findById(args.productId);
@@ -108,7 +113,7 @@ const updateProduct = async (args) => {
       await Brand.deleteOne({ _id: product.brand });
 
       const newBrand = new Brand({
-        name: args.updateProduct.brand
+        name: args.updateProduct.brand,
       });
 
       const resp = await newBrand.save();
@@ -136,11 +141,11 @@ const updateProduct = async (args) => {
   }
 };
 
-//delete product
-//private/admin
-const deleteProduct = async (args) => {
+// delete product
+// private/admin
+const deleteProduct = async (args, { req, redis }) => {
   try {
-    if(admin(req)) {
+    if (admin(req)) {
       const product = await Product.find({ _id: args.id });
       if (product) {
         await Brand.deleteOne({ _id: product.brand });

@@ -10,7 +10,7 @@ const questions = async () => {
   }
 };
 
-const question = async (args) => {
+const question = async (args, { req, redis }) => {
   try {
     const question = await Question.findOne({
       level: args.level,
@@ -24,7 +24,7 @@ const question = async (args) => {
 
 const editQuestions = async (args, { req, redis }) => {
   try {
-    // if(admin(req)) {
+    if (admin(req)) {
       const { details } = args;
 
       await Question.find({}).deleteMany({});
@@ -40,7 +40,7 @@ const editQuestions = async (args, { req, redis }) => {
       }
 
       return { msg: 'success' };
-    // }
+    }
   } catch (err) {
     throw err;
   }

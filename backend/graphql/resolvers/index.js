@@ -28,43 +28,24 @@ import {
   deleteProduct,
 } from './products.js';
 
-import { 
-  questions, 
-  question, 
-  editQuestions
-} from './chatbot.js';
-
-import { 
-  createCategory, 
-  categories, 
-  updateCategory, 
-  deleteCategory 
+import {
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  getSubCategories,
+  createSubCategory,
+  updateSubCategory,
+  deleteSubCategory,
 } from './category.js';
+
+import { questions, question, editQuestions } from './chatbot.js';
 
 import { filterProducts } from './productFilter.js';
 
 import { searchProduct } from './search.js';
 
 export default {
-  //orders
-  orders: getOrders,
-  myorders: getMyOrders,
-  orderById: getOrderById,
-  createOrder: addOrderItems,
-  updateOrderToPaid: updateOrderToPaid,
-  updateOrderToDelivered: updateOrderToDelivered,
-  isDeliverable: isDeliverable,
-  //chatbot
-  questions: questions,
-  question: question,
-  editQuestions: editQuestions,
-  //categories
-  createCategory: createCategory, 
-  categories: categories, 
-  updateCategory: updateCategory, 
-  deleteCategory: deleteCategory,
-  //filterProducts
-  filterProducts: filterProducts,
   //users
   authUser: authUser,
   registerUser: registerUser,
@@ -74,6 +55,16 @@ export default {
   deleteUser: deleteUser,
   getUserById: getUserById,
   updateUser: updateUser,
+  //categories
+  createCategory: createCategory,
+  getCategories: getCategories,
+  updateCategory: updateCategory,
+  deleteCategory: deleteCategory,
+  //subcategories
+  createSubCategory: createSubCategory,
+  getSubCategories: getSubCategories,
+  updateSubCategory: updateSubCategory,
+  deleteSubCategory: deleteSubCategory,
   //products
   createProduct: createProduct,
   getProduct: getProduct,
@@ -81,6 +72,19 @@ export default {
   getNewProducts: getNewProducts,
   updateProduct: updateProduct,
   deleteProduct: deleteProduct,
+  //orders
+  orders: getOrders,
+  myorders: getMyOrders,
+  orderById: getOrderById,
+  createOrder: addOrderItems,
+  updateOrderToPaid: updateOrderToPaid,
+  updateOrderToDelivered: updateOrderToDelivered,
+  //chatbot
+  questions: questions,
+  question: question,
+  editQuestions: editQuestions,
   //search
   searchProduct: searchProduct,
+  //filterProducts
+  filterProducts: filterProducts,
 };
