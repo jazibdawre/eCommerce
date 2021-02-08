@@ -1,8 +1,8 @@
 import Product from '../../models/productModel.js';
 
 // Ignore results with confidence score less than 7
+// Populate category and brand once implemented
 export const searchProduct = async (args) => {
-  const prods = await Product.fuzzySearch(args.searchTerm);
-  console.log(prods);
+  const prods = await Product.fuzzySearch(args.searchTerm).populate('user');
   return prods;
 };
