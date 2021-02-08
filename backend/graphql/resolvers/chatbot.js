@@ -1,6 +1,7 @@
 import Question from '../../models/questionModel.js';
+import { loggedin, admin } from '../../utils/verifyUser.js';
 
-const questions = async (args, req) => {
+const questions = async () => {
   try {
     const questions = await Question.find({});
     return questions;
@@ -9,7 +10,7 @@ const questions = async (args, req) => {
   }
 };
 
-const question = async (args, req) => {
+const question = async (args) => {
   try {
     const question = await Question.findOne({
       level: args.level,
@@ -21,25 +22,25 @@ const question = async (args, req) => {
   }
 };
 
-const editQuestions = async (args, req) => {
-  // if (!req.isAuth) {
-  //   throw new Error('Unauthenticated!');
-  // }
+const editQuestions = async (args, { req, redis }) => {
   try {
-    const { details } = args;
+    // if(admin(req)) {
+      const { details } = args;
 
-    await Question.find({}).deleteMany({});
+      await Question.find({}).deleteMany({});
 
-    for (let i = 0; i < details.length; i++) {
-      const newQuestions = new Question({
-        msg: details[i].msg,
-        level: details[i].level,
-        index: details[i].index,
-      });
-      await newQuestions.save();
-    }
+      for (let i = 0; i < details.length; i++) {
+        const newQuestions = new Question({
+          msg: details[i].msg,
+          info: details[i].info,
+          level: details[i].level,
+          index: details[i].index,
+        });
+        await newQuestions.save();
+      }
 
-    return { msg: 'success' };
+      return { msg: 'success' };
+    // }
   } catch (err) {
     throw err;
   }

@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import colors from 'colors';
 import morgan from 'morgan';
 import Redis from 'ioredis';
+import cors from 'cors';
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import { verify } from './middleware/authMiddleware.js';
@@ -27,6 +28,16 @@ if (process.env.NODE_ENV === 'development') {
 
 app.use(express.json());
 app.use(verify);
+app.use(cors());
+
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
 
 app.use(
   '/graphql',

@@ -26,7 +26,20 @@ import {
   deleteProduct,
 } from './products.js';
 
-import { questions, question, editQuestions } from './chatbot.js';
+import { 
+  questions, 
+  question, 
+  editQuestions
+} from './chatbot.js';
+
+import { 
+  createCategory, 
+  categories, 
+  updateCategory, 
+  deleteCategory 
+} from './category.js';
+
+import { filterProducts } from './productFilter.js';
 
 import { searchProduct } from './search.js';
 
@@ -42,6 +55,13 @@ export default {
   questions: questions,
   question: question,
   editQuestions: editQuestions,
+  //categories
+  createCategory: createCategory, 
+  categories: categories, 
+  updateCategory: updateCategory, 
+  deleteCategory: deleteCategory,
+  //filterProducts
+  filterProducts: filterProducts,
   //users
   authUser: authUser,
   registerUser: registerUser,
