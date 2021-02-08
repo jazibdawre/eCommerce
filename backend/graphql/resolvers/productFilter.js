@@ -10,7 +10,7 @@ const filterProducts = async (args, { req, redis }) => {
       r3 = [];
 
     const prods = await Product.fuzzySearch(args.searchTerm).populate(
-      'user brand category'
+      'user brand category subcategory'
     );
 
     const relatedProds = prods.filter((prod) => prod.confidenceScore > 7);

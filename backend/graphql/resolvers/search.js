@@ -4,7 +4,7 @@ import Product from '../../models/productModel.js';
 // Populate category and brand once implemented
 export const searchProduct = async (args, { req, redis }) => {
   const prods = await Product.fuzzySearch(args.searchTerm).populate(
-    'user brand category'
+    'user brand category subcategory'
   );
   return prods.filter((prod) => prod.confidenceScore > 7);
 };

@@ -34,7 +34,9 @@ const createProduct = async (args, { req, redis }) => {
 
 const getProduct = async (args, { req, redis }) => {
   try {
-    const product = Product.find({ name: args.name }).populate('brand');
+    const product = Product.find({ name: args.name }).populate(
+      'user brand category subcategory'
+    );
     if (product) {
       return product;
     } else {
@@ -49,7 +51,9 @@ const getProduct = async (args, { req, redis }) => {
 
 const getProductById = async (args, { req, redis }) => {
   try {
-    const product = Product.find({ _id: args.id }).populate('brand');
+    const product = Product.find({ _id: args.id }).populate(
+      'user brand category subcategory'
+    );
     if (product) {
       return product;
     } else {
