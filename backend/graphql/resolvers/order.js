@@ -1,11 +1,12 @@
 import Order from '../../models/orderModel.js';
 import { loggedin, admin } from '../../utils/verifyUser.js';
+import pincode from "../../pincodes.js";
 
 // PS: After .save(), user & product are not populated and can't be queried via graphql
 
 // Create new order
 // Private
-const addOrderItems = async (args) => {
+const addOrderItems = async (args, req) => {
   try {
     if (loggedin(req)) {
       const order = new Order({
@@ -40,7 +41,7 @@ const addOrderItems = async (args) => {
 
 // Get order by ID
 // Private
-const getOrderById = async (args) => {
+const getOrderById = async (args, req) => {
   try {
     if (loggedin(req)) {
       const order = await Order.findById(args.orderId).populate(
@@ -50,7 +51,7 @@ const getOrderById = async (args) => {
       if (order && order._id === req.user._id) {
         return order;
       } else {
-        throw new Error('Order not found');
+        throw new Error('Order not found!!');
       }
     }
   } catch (err) {
@@ -75,7 +76,7 @@ const updateOrderToPaid = async (args, req) => {
         const updatedOrder = await order.save();
         return updatedOrder;
       } else {
-        throw new Error('Order not found');
+        throw new Error('Order not found!!');
       }
     }
   } catch (err) {
@@ -86,7 +87,7 @@ const updateOrderToPaid = async (args, req) => {
 
 // Update order to delivered
 // Private/Admin
-const updateOrderToDelivered = async (args) => {
+const updateOrderToDelivered = async (args, req) => {
   try {
     if (admin(req)) {
       const order = await Order.findById(args.orderId);
@@ -98,7 +99,7 @@ const updateOrderToDelivered = async (args) => {
         const updatedOrder = await order.save();
         return updatedOrder;
       } else {
-        throw new Error('Order not found');
+        throw new Error('Order not found!!');
       }
     }
   } catch (err) {
@@ -109,7 +110,7 @@ const updateOrderToDelivered = async (args) => {
 
 // Get logged in user orders
 // Private
-const getMyOrders = async (args) => {
+const getMyOrders = async (args, req) => {
   try {
     if (loggedin(req)) {
       const orders = await Order.find({ user: req.user._id }).populate(
@@ -137,7 +138,7 @@ const getMyOrders = async (args) => {
 
 // Get all orders
 // Private/Admin
-const getOrders = async (args) => {
+const getOrders = async (args, req) => {
   try {
     if (admin(req)) {
       const orders = await Order.find({}).populate('user orderItems.product');
@@ -161,6 +162,30 @@ const getOrders = async (args) => {
   }
 };
 
+//is deliverable
+//private
+const isDeliverable = async (args, req) => {
+  try{
+    if(loggedin(req)) {
+      const pin = args.shippingAddressInput.postalCode;
+      if(pin.length!=6){
+        return false; 
+      } else {
+        var q = false;
+        for (var a = 0; a < pincode.pincode.length; a++) {
+          if(pin==pincode.pincode[a]) {
+            q = true;
+          }
+        }
+        return q;
+      }  
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 export {
   addOrderItems,
   getOrderById,
@@ -168,4 +193,5 @@ export {
   updateOrderToDelivered,
   getMyOrders,
   getOrders,
+  isDeliverable,
 };
