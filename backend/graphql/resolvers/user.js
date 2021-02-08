@@ -4,7 +4,7 @@ import generateToken from '../../utils/generateToken.js';
 
 // Auth user & get token
 // Public
-const authUser = async (args, req) => {
+const authUser = async (args) => {
   try {
     const user = await User.findOne({ email: args.email });
 
@@ -24,7 +24,7 @@ const authUser = async (args, req) => {
 
 // Register a new user
 // Public
-const registerUser = async (args, req) => {
+const registerUser = async (args) => {
   try {
     const userExists = await User.findOne({ email: args.userInput.email });
 
@@ -55,7 +55,7 @@ const registerUser = async (args, req) => {
 
 // Get user profile
 // Private
-const getUserProfile = async (args, req) => {
+const getUserProfile = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const user = await User.findById(req.user._id);
@@ -76,7 +76,7 @@ const getUserProfile = async (args, req) => {
 
 // Update user profile
 // Private
-const updateUserProfile = async (args, req) => {
+const updateUserProfile = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const user = await User.findById(req.user._id);
@@ -108,7 +108,7 @@ const updateUserProfile = async (args, req) => {
 
 // Get all users
 // Private/Admin
-const getUsers = async (args, req) => {
+const getUsers = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
       const users = await User.find({});
@@ -122,7 +122,7 @@ const getUsers = async (args, req) => {
 
 // Delete user
 // Private/Admin
-const deleteUser = async (args, req) => {
+const deleteUser = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
       const user = await User.findById(args.userId);
@@ -142,7 +142,7 @@ const deleteUser = async (args, req) => {
 
 // Get user by ID
 // Private/Admin
-const getUserById = async (args, req) => {
+const getUserById = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
       const user = await User.findById(args.userId).select('-password');
@@ -161,7 +161,7 @@ const getUserById = async (args, req) => {
 
 // Update user
 // Private/Admin
-const updateUser = async (args, req) => {
+const updateUser = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
       const user = await User.findById(args.userId);

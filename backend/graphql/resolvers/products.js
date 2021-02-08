@@ -1,6 +1,9 @@
 import Product from '../../models/productModel.js';
 import Category from '../../models/categoryModel.js';
 
+// To cache getAllProducts, getAllCategories, getProductByCategories, getProductById
+// redis.set("key", JSON.stringify(obj));
+
 const createProduct = async (args) => {
   try {
     const product = new Product({
@@ -22,7 +25,7 @@ const createProduct = async (args) => {
   }
 };
 
-const getProduct = async (args) => {
+const getProduct = async (args, { req, redis }) => {
   try {
     const product = Product.find({ name: args.name });
     if (product) {

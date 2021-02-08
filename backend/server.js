@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import colors from 'colors';
 import morgan from 'morgan';
+import Redis from 'ioredis';
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 import { verify } from './middleware/authMiddleware.js';
@@ -18,6 +19,7 @@ dotenv.config();
 await connectDB();
 
 const app = express();
+const redis = new Redis();
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -28,10 +30,13 @@ app.use(verify);
 
 app.use(
   '/graphql',
-  graphqlHTTP({
-    schema: graphqlSchema,
-    rootValue: graphqlResolvers,
-    graphiql: process.env.NODE_ENV === 'development' ? true : false,
+  graphqlHTTP((req, res, graphQLParams) => {
+    return {
+      schema: graphqlSchema,
+      rootValue: graphqlResolvers,
+      context: { req, redis },
+      graphiql: process.env.NODE_ENV === 'development' ? true : false,
+    };
   })
 );
 

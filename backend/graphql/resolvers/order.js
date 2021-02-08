@@ -62,7 +62,7 @@ const getOrderById = async (args) => {
 // Update order to paid
 // Private
 // To be called via payment resolver once implemented
-const updateOrderToPaid = async (args, req) => {
+const updateOrderToPaid = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const order = await Order.findById(args.orderId);
