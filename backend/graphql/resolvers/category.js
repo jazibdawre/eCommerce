@@ -1,6 +1,8 @@
 import Category from '../../models/categoryModel.js';
+import SubCategory from '../../models/subcategoryModel.js';
 import { loggedin, admin } from '../../utils/verifyUser.js';
 
+// Category
 const createCategory = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
@@ -12,17 +14,18 @@ const createCategory = async (args, { req, redis }) => {
         const newCategory = new Category({
           name: name,
         });
-        await newCategory.save();
+        const res = newCategory.save();
+        return res;
+      } else {
+        throw new Error('Category already exists');
       }
-
-      return { msg: 'success' };
     }
   } catch (err) {
     throw err;
   }
 };
 
-const categories = async () => {
+const getCategories = async (args, { req, redis }) => {
   try {
     const categories = await Category.find({});
     return categories;
@@ -64,4 +67,74 @@ const deleteCategory = async (args, { req, redis }) => {
   }
 };
 
-export { createCategory, categories, updateCategory, deleteCategory };
+// SubCategory
+const createSubCategory = async (args, { req, redis }) => {
+  try {
+    if (admin(req)) {
+      const { name, category } = args;
+
+      const resp = await SubCategory.find({ name: name, category: category });
+
+      if (resp.length === 0) {
+        const newSubCategory = new SubCategory({
+          name: name,
+          category: category,
+        });
+        const res = newSubCategory.save();
+        return res;
+      } else {
+        throw new Error('Subcategory already exists in given category');
+      }
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+
+const getSubCategories = async (args, { req, redis }) => {
+  try {
+    const subCategories = await SubCategory.find({}).populate('category');
+    return subCategories;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const updateSubCategory = async (args, { req, redis }) => {
+  try {
+    if (admin(req)) {
+      await SubCategory.update(
+        { _id: args.subCategoryId },
+        {
+          name: args.name,
+        }
+      ).exec();
+
+      return { msg: 'success' };
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+
+const deleteSubCategory = async (args, { req, redis }) => {
+  try {
+    if (admin(req)) {
+      await SubCategory.deleteOne({ _id: args.subCategoryId });
+      return { msg: 'success' };
+    }
+  } catch (err) {
+    throw err;
+  }
+};
+
+export {
+  getCategories,
+  createCategory,
+  updateCategory,
+  deleteCategory,
+  getSubCategories,
+  createSubCategory,
+  updateSubCategory,
+  deleteSubCategory,
+};
