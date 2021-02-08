@@ -10,7 +10,7 @@ export const getChat = (query) => async (dispatch) => {
     type: CHATBOT_CREATE_REQUEST,
   });
 
-  const { loading, error, data } = useQuery(query);
+  const { error, data } = useQuery(query);
 
   console.log(data);
 

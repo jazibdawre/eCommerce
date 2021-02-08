@@ -1,20 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Container } from 'react-bootstrap';
-import { useSelector, useDispatch } from 'react-redux';
 import { gql, useQuery } from '@apollo/client';
 import {
   CARD_STYLES,
   FOOTER_STYLES,
   MESSAGE_ICON,
   MODAL_STYLES,
-  mODAL_STYLES,
-  moDAL_STYLES,
+  MODAL_STYLES1,
+  MODAL_STYLES2,
 } from './components/ChatbotStyles';
 
 import Buttons from './components/Buttons';
 import Message from './components/Message';
 import Robot from './components/Robot';
-import { getChat } from '../../actions/chatbotAction';
 
 const options = [
   'Return order',
@@ -31,7 +29,6 @@ export default function Chatbot() {
   const [chats, setChats] = useState([
     { type: 'robot', message: 'Welcome to chatbot' },
   ]);
-  const dispatch = useDispatch();
 
   const bottomRef = useRef();
 
@@ -74,7 +71,7 @@ export default function Chatbot() {
 
   return (
     <>
-      <div style={moDAL_STYLES}>
+      <div style={MODAL_STYLES2}>
         <Card
           style={{
             ...CARD_STYLES,
@@ -103,7 +100,7 @@ export default function Chatbot() {
                 return (
                   <Message
                     message={chat.message}
-                    key={index}
+                    key={chat.message}
                     bottom={bottomRef}
                   />
                 );
@@ -119,7 +116,7 @@ export default function Chatbot() {
                 return (
                   <Message
                     message={chat.message}
-                    key={index}
+                    key={chat.message}
                     bottom={false}
                   />
                 );
@@ -127,7 +124,7 @@ export default function Chatbot() {
                 return (
                   <Robot
                     message={chat.message}
-                    key={index}
+                    key={chat.message}
                     bottom={false}
                   />
                 );
@@ -160,7 +157,7 @@ export default function Chatbot() {
         </Card>
       </div>
 
-      <div style={mODAL_STYLES}>
+      <div style={MODAL_STYLES1}>
         <i
           className="fas fa-caret-down"
           style={{

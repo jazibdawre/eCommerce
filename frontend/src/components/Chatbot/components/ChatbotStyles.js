@@ -39,7 +39,7 @@ export const BUTTON_STYLES = {
   textTransform: 'none',
 };
 
-export const mODAL_STYLES = {
+export const MODAL_STYLES1 = {
   position: 'fixed',
   bottom: '8.5%',
   right: '5.7%',
@@ -48,7 +48,7 @@ export const mODAL_STYLES = {
   padding: '0px',
 };
 
-export const moDAL_STYLES = {
+export const MODAL_STYLES2 = {
   position: 'fixed',
   bottom: '8.6%',
   right: '6.5%',
