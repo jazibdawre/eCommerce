@@ -1,28 +1,28 @@
 import Category from '../../models/categoryModel.js';
+import { loggedin, admin } from '../../utils/verifyUser.js';
 
-const createCategory = async (args, req) => {
-  // if (!req.isAuth) {
-  //   throw new Error('Unauthenticated!');
-  // }
+const createCategory = async (args, { req, redis }) => {
   try {
-    const { name } = args;
+    // if(admin(req)) {
+      const { name } = args;
 
-    const resp = await Category.find({ name: name });
+      const resp = await Category.find({ name: name });
 
-    if(resp.length === 0) {
-      const newCategory = new Category({
-        name: name,
-      });
-      await newCategory.save();
-    }
-    
-    return { msg: 'success' };
+      if(resp.length === 0) {
+        const newCategory = new Category({
+          name: name,
+        });
+        await newCategory.save();
+      }
+      
+      return { msg: 'success' };
+    // }
   } catch (err) {
     throw err;
   }
 };
 
-const categories = async (args, req) => {
+const categories = async () => {
   try {
     const categories = await Category.find({});
     return categories;
@@ -31,39 +31,37 @@ const categories = async (args, req) => {
   }
 };
 
-const updateCategory = async (args, req) => {
-  // if (!req.isAuth) {
-  //   throw new Error('Unauthenticated!');
-  // }
+const updateCategory = async (args, { req, redis }) => {
   try {
-    const { name, newName } = args;
+    // if(admin(req)) {
+      const { name, newName } = args;
 
-    let updatedCategory = {
-      name: newName,
-    };
-    updatedCategory = { $set: updatedCategory };
+      let updatedCategory = {
+        name: newName,
+      };
+      updatedCategory = { $set: updatedCategory };
 
-    await Category.update(
-      { name: name },
-      updatedCategory
-    ).exec();
-    
-    return { msg: 'success' };
+      await Category.update(
+        { name: name },
+        updatedCategory
+      ).exec();
+      
+      return { msg: 'success' };
+    // }
   } catch (err) {
     throw err;
   }
 };
 
-const deleteCategory = async (args, req) => {
-  // if (!req.isAuth) {
-  //   throw new Error('Unauthenticated!');
-  // }
+const deleteCategory = async (args, { req, redis }) => {
   try {
-    const { name } = args;
+    // if(admin(req)) {
+      const { name } = args;
 
-    await Category.deleteOne({ name: name });
-    
-    return { msg: 'success' };
+      await Category.deleteOne({ name: name });
+      
+      return { msg: 'success' };
+    // }
   } catch (err) {
     throw err;
   }
