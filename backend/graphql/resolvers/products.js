@@ -5,10 +5,10 @@ import Brand from '../../models/brandModel.js';
 // To cache getAllProducts, getAllCategories, getProductByCategories, getProductById
 // redis.set("key", JSON.stringify(obj));
 
-const createProduct = async (args) => {
+const createProduct = async (args, { req, redis }) => {
   try {
     const newBrand = new Brand({
-      name: args.productInput.brand
+      name: args.productInput.brand,
     });
 
     const resp = await newBrand.save();
@@ -34,9 +34,7 @@ const createProduct = async (args) => {
 
 const getProduct = async (args, { req, redis }) => {
   try {
-    const product = Product
-                      .find({ name: args.name })
-                      .populate('brand');
+    const product = Product.find({ name: args.name }).populate('brand');
     if (product) {
       return product;
     } else {
@@ -49,7 +47,7 @@ const getProduct = async (args, { req, redis }) => {
   }
 };
 
-const getProductById = async (args) => {
+const getProductById = async (args, { req, redis }) => {
   try {
     const product = Product.find({ _id: args.id }).populate('brand');
     if (product) {
@@ -64,10 +62,10 @@ const getProductById = async (args) => {
   }
 };
 
-const updateProduct = async (args) => {
+const updateProduct = async (args, { req, redis }) => {
   try {
     console.log(args.productId);
-    // console.log(args);
+    // console.log(args, { req, redis });
     const product = await Product.findById(args.productId);
     if (!product) {
       res.status(404);
@@ -77,7 +75,7 @@ const updateProduct = async (args) => {
     await Brand.deleteOne({ _id: product.brand });
 
     const newBrand = new Brand({
-      name: args.updateProduct.brand
+      name: args.updateProduct.brand,
     });
 
     const resp = await newBrand.save();
@@ -104,7 +102,7 @@ const updateProduct = async (args) => {
   }
 };
 
-const deleteProduct = async (args) => {
+const deleteProduct = async (args, { req, redis }) => {
   try {
     const product = await Product.find({ _id: args.id });
     if (product) {

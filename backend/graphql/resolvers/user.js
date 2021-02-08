@@ -4,7 +4,7 @@ import generateToken from '../../utils/generateToken.js';
 
 // Auth user & get token
 // Public
-const authUser = async (args) => {
+const authUser = async (args, { req, redis }) => {
   try {
     const user = await User.findOne({ email: args.email });
 
@@ -24,7 +24,7 @@ const authUser = async (args) => {
 
 // Register a new user
 // Public
-const registerUser = async (args) => {
+const registerUser = async (args, { req, redis }) => {
   try {
     const userExists = await User.findOne({ email: args.userInput.email });
 

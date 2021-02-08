@@ -3,20 +3,20 @@ import { loggedin, admin } from '../../utils/verifyUser.js';
 
 const createCategory = async (args, { req, redis }) => {
   try {
-    // if(admin(req)) {
+    if (admin(req)) {
       const { name } = args;
 
       const resp = await Category.find({ name: name });
 
-      if(resp.length === 0) {
+      if (resp.length === 0) {
         const newCategory = new Category({
           name: name,
         });
         await newCategory.save();
       }
-      
+
       return { msg: 'success' };
-    // }
+    }
   } catch (err) {
     throw err;
   }
@@ -33,7 +33,7 @@ const categories = async () => {
 
 const updateCategory = async (args, { req, redis }) => {
   try {
-    // if(admin(req)) {
+    if (admin(req)) {
       const { name, newName } = args;
 
       let updatedCategory = {
@@ -41,13 +41,10 @@ const updateCategory = async (args, { req, redis }) => {
       };
       updatedCategory = { $set: updatedCategory };
 
-      await Category.update(
-        { name: name },
-        updatedCategory
-      ).exec();
-      
+      await Category.update({ name: name }, updatedCategory).exec();
+
       return { msg: 'success' };
-    // }
+    }
   } catch (err) {
     throw err;
   }
@@ -55,13 +52,13 @@ const updateCategory = async (args, { req, redis }) => {
 
 const deleteCategory = async (args, { req, redis }) => {
   try {
-    // if(admin(req)) {
+    if (admin(req)) {
       const { name } = args;
 
       await Category.deleteOne({ name: name });
-      
+
       return { msg: 'success' };
-    // }
+    }
   } catch (err) {
     throw err;
   }

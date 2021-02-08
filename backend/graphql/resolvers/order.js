@@ -5,7 +5,7 @@ import { loggedin, admin } from '../../utils/verifyUser.js';
 
 // Create new order
 // Private
-const addOrderItems = async (args) => {
+const addOrderItems = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const order = new Order({
@@ -40,7 +40,7 @@ const addOrderItems = async (args) => {
 
 // Get order by ID
 // Private
-const getOrderById = async (args) => {
+const getOrderById = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const order = await Order.findById(args.orderId).populate(
@@ -86,7 +86,7 @@ const updateOrderToPaid = async (args, { req, redis }) => {
 
 // Update order to delivered
 // Private/Admin
-const updateOrderToDelivered = async (args) => {
+const updateOrderToDelivered = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
       const order = await Order.findById(args.orderId);
@@ -109,7 +109,7 @@ const updateOrderToDelivered = async (args) => {
 
 // Get logged in user orders
 // Private
-const getMyOrders = async (args) => {
+const getMyOrders = async (args, { req, redis }) => {
   try {
     if (loggedin(req)) {
       const orders = await Order.find({ user: req.user._id }).populate(
@@ -137,7 +137,7 @@ const getMyOrders = async (args) => {
 
 // Get all orders
 // Private/Admin
-const getOrders = async (args) => {
+const getOrders = async (args, { req, redis }) => {
   try {
     if (admin(req)) {
       const orders = await Order.find({}).populate('user orderItems.product');
