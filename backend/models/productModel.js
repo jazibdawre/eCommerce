@@ -44,6 +44,11 @@ const productSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'SubCategory',
     },
+    new: {
+      type: Boolean,
+      default: false,
+      required: true,
+    },
     description: {
       type: String,
       required: true,
@@ -59,7 +64,17 @@ const productSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    discount: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     price: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    discountedPrice: {
       type: Number,
       required: true,
       default: 0,

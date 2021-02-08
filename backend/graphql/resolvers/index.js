@@ -16,12 +16,14 @@ import {
   updateOrderToDelivered,
   getMyOrders,
   getOrders,
+  isDeliverable,
 } from './order.js';
 
 import {
   createProduct,
   getProduct,
   getProductById,
+  getNewProducts,
   updateProduct,
   deleteProduct,
 } from './products.js';
@@ -67,6 +69,7 @@ export default {
   createProduct: createProduct,
   getProduct: getProduct,
   getProductById: getProductById,
+  getNewProducts: getNewProducts,
   updateProduct: updateProduct,
   deleteProduct: deleteProduct,
   //orders

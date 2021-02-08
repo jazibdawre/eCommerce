@@ -23,27 +23,27 @@ export default buildSchema(`
         orders: [Order!]!
         myorders: [Order!]!
         orderById(orderId: ID!): Order!
-
         questions: [Question]
         question(level: String!, index: String!): Question
 
         getCategories: [Category]
-
+        
         getSubCategories: [SubCategory]
-
+        
         authUser(email: String!, password: String!): User!
         getUserProfile: User!
         getUsers: [User!]!
         getUserById(userId: ID!): User!
-
+        
         getProduct(name: String!): [Product!]!
         getProductById(id: ID!): [Product!]!
+        getNewProducts: [Product!]!
         deleteProduct(id: ID!): Product!
-
+        isDeliverable(shippingAddressInput: ShippingAddressInput): Boolean!,
+        
         searchProduct(searchTerm: String!): [Product!]!
         filterProducts(filters: FilterInput): [Product!]!
     }
-
     type rootMutation {
         createOrder(orderInput: OrderInput): Order!
         updateOrderToPaid(orderId: ID!, paymentResult: PaymentResultInput!): Order!
@@ -67,7 +67,6 @@ export default buildSchema(`
         createProduct(productInput: ProductInput):  Product!
         updateProduct(productId: ID!, updateProduct: updateProduct): Product!
     }
-
     schema {
         query: rootQuery
         mutation: rootMutation

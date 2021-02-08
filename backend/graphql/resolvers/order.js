@@ -1,5 +1,6 @@
 import Order from '../../models/orderModel.js';
 import { loggedin, admin } from '../../utils/verifyUser.js';
+import pincode from '../../pincodes.js';
 
 // PS: After .save(), user & product are not populated and can't be queried via graphql
 
@@ -50,7 +51,7 @@ const getOrderById = async (args, { req, redis }) => {
       if (order && order._id === req.user._id) {
         return order;
       } else {
-        throw new Error('Order not found');
+        throw new Error('Order not found!!');
       }
     }
   } catch (err) {
@@ -75,7 +76,7 @@ const updateOrderToPaid = async (args, { req, redis }) => {
         const updatedOrder = await order.save();
         return updatedOrder;
       } else {
-        throw new Error('Order not found');
+        throw new Error('Order not found!!');
       }
     }
   } catch (err) {
@@ -98,7 +99,7 @@ const updateOrderToDelivered = async (args, { req, redis }) => {
         const updatedOrder = await order.save();
         return updatedOrder;
       } else {
-        throw new Error('Order not found');
+        throw new Error('Order not found!!');
       }
     }
   } catch (err) {
@@ -161,6 +162,30 @@ const getOrders = async (args, { req, redis }) => {
   }
 };
 
+//is deliverable
+//private
+const isDeliverable = async (args, req) => {
+  try {
+    if (loggedin(req)) {
+      const pin = args.shippingAddressInput.postalCode;
+      if (pin.length != 6) {
+        return false;
+      } else {
+        var q = false;
+        for (var a = 0; a < pincode.pincode.length; a++) {
+          if (pin == pincode.pincode[a]) {
+            q = true;
+          }
+        }
+        return q;
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
+
 export {
   addOrderItems,
   getOrderById,
@@ -168,4 +193,5 @@ export {
   updateOrderToDelivered,
   getMyOrders,
   getOrders,
+  isDeliverable,
 };
