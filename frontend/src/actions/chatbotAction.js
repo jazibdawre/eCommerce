@@ -1,4 +1,5 @@
 import { useQuery } from '@apollo/client';
+import axios from 'axios';
 import {
   CHATBOT_CREATE_FAIL,
   CHATBOT_CREATE_SUCCESS,
@@ -6,23 +7,30 @@ import {
 } from '../constants/chatbotConstants';
 
 export const getChat = (query) => async (dispatch) => {
-  dispatch({
-    type: CHATBOT_CREATE_REQUEST,
-  });
+  try {
+    dispatch({
+      type: CHATBOT_CREATE_REQUEST,
+    });
 
-  const { error, data } = useQuery(query);
+    const request = {
+      method: 'post',
+      url: 'http://localhost:5000/graphql',
+      data: {
+        query,
+      }
+    }
 
-  console.log(data);
-
-  if (error) {
+    const {data} = await axios(request);
+    console.log(data.data.questions);
+    
+    dispatch({
+      type: CHATBOT_CREATE_SUCCESS,
+      payload: data.data.questions,
+    });
+  } catch (error){
     dispatch({
       type: CHATBOT_CREATE_FAIL,
       payload: error,
-    });
-  } else {
-    dispatch({
-      type: CHATBOT_CREATE_SUCCESS,
-      payload: data,
-    });
+    })
   }
 };

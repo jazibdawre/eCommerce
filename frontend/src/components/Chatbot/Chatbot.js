@@ -1,44 +1,56 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Container } from 'react-bootstrap';
-import { gql, useQuery } from '@apollo/client';
-import {
-  CARD_STYLES,
-  FOOTER_STYLES,
-  MESSAGE_ICON,
-  MODAL_STYLES,
-  MODAL_STYLES1,
-  MODAL_STYLES2,
-} from './components/ChatbotStyles';
-
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import Buttons from './components/Buttons';
 import Message from './components/Message';
 import Robot from './components/Robot';
-
-const options = [
-  'Return order',
-  'Replace',
-  'Nothing',
-  'smtg',
-  'amt',
-  'sdfd',
-  'gsgsdfg',
-];
+import { getChat } from '../../actions/chatbotAction';
 
 export default function Chatbot() {
   const [click, setClick] = useState(false);
   const [chats, setChats] = useState([
     { type: 'robot', message: 'Welcome to chatbot' },
   ]);
+  const [options, setOptions] = useState([]);
+
+  const dispatch = useDispatch();
+  const chatbot = useSelector((state) => state.chatbot);
 
   const bottomRef = useRef();
 
   const handleClick = (option) => {
     setChats((c) => {
-      return [...c, { type: 'message', message: `${option}` }];
+      return [...c, { type: 'message', message: `${option.msg}` }];
     });
     setChats((c) => {
-      return [...c, { type: 'robot', message: `Hi. i am robot` }];
+      return [...c, { type: 'robot', message: `${option.info}` }];
     });
+    console.log(
+      chatbot.data.filter((value) => {
+        const len = option.index.length;
+        if (
+          value.index
+            .substring(0, len + 1)
+            .localeCompare(`${option.index} `) === 0
+        ) {
+          return value;
+        }
+      }),
+    );
+    setOptions(
+      chatbot.data.filter((value) => {
+        const len = option.index.length;
+        if (
+          value.index
+            .substring(0, len + 1)
+            .localeCompare(`${option.index} `) === 0 &&
+          value.index.length === len + 2
+        ) {
+          return value;
+        }
+      }),
+    );
   };
 
   const scrollToBottom = () => {
@@ -49,21 +61,32 @@ export default function Chatbot() {
     });
   };
 
-  const query = gql`
-    query QUESTIONSQuery {
-      questions {
-        msg
-        level
-        index
-      }
+  const query = `query{
+    questions{
+      level
+      index
+      msg
+      info
     }
-  `;
-
-  const vidhan = useQuery(query);
+  }`;
 
   useEffect(() => {
-    console.log(vidhan);
-  }, [vidhan]);
+    if (chatbot.data) {
+      setOptions(
+        chatbot.data.filter((value) => {
+          return value.level === '1';
+        }),
+      );
+      const filtered = chatbot.data.filter((value) => {
+        return value.level === '1';
+      });
+      console.log(filtered);
+    }
+  }, [chatbot.data]);
+
+  useEffect(() => {
+    if (click) dispatch(getChat(query));
+  }, [click]);
 
   useEffect(() => {
     scrollToBottom();
@@ -71,10 +94,9 @@ export default function Chatbot() {
 
   return (
     <>
-      <div style={MODAL_STYLES2}>
-        <Card
+      <MODAL_STYLES2>
+        <CARD_STYLES
           style={{
-            ...CARD_STYLES,
             display: `${click ? 'block' : 'none'}`,
           }}
         >
@@ -92,48 +114,54 @@ export default function Chatbot() {
             className="mt-2"
             style={{ height: '78%', overflowY: 'scroll' }}
           >
-            {chats.map((chat, index) => {
-              if (
-                chat.type === 'message' &&
-                index === chats.length - 1
-              )
-                return (
-                  <Message
-                    message={chat.message}
-                    key={chat.message}
-                    bottom={bottomRef}
-                  />
-                );
-              if (chat.type === 'robot' && index === chats.length - 1)
-                return (
-                  <Robot
-                    message={chat.message}
-                    key={index}
-                    bottom={bottomRef}
-                  />
-                );
-              if (chat.type === 'message')
-                return (
-                  <Message
-                    message={chat.message}
-                    key={chat.message}
-                    bottom={false}
-                  />
-                );
-              if (chat.type === 'robot')
-                return (
-                  <Robot
-                    message={chat.message}
-                    key={chat.message}
-                    bottom={false}
-                  />
-                );
-              return <></>;
-            })}
+            {chatbot.loading
+              ? 'Loading'
+              : chats.map((chat, index) => {
+                  if (
+                    chat.type === 'message' &&
+                    index === chats.length - 1
+                  )
+                    return (
+                      <Message
+                        message={chat.message}
+                        key={index}
+                        bottom={bottomRef}
+                      />
+                    );
+                  if (
+                    chat.type === 'robot' &&
+                    index === chats.length - 1
+                  )
+                    return (
+                      <Robot
+                        message={chat.message}
+                        key={index}
+                        bottom={bottomRef}
+                      />
+                    );
+                  if (chat.type === 'message')
+                    return (
+                      <Message
+                        message={chat.message}
+                        key={index}
+                        bottom={false}
+                      />
+                    );
+                  if (chat.type === 'robot')
+                    return (
+                      <Robot
+                        message={chat.message}
+                        key={index}
+                        bottom={false}
+                      />
+                    );
+                  return <></>;
+                })}
+            {}
           </Container>
-          <div className="ml-2 mb-2" style={FOOTER_STYLES}>
+          <FOOTER_STYLES className="ml-2 mb-2">
             <small className="ml-2">
-              Choose from one of the replies below
+              {options.length === 0 ? '' : 'Choose from one of the replies below'}
             </small>
             <br />
             <div
@@ -143,21 +171,21 @@ export default function Chatbot() {
                 width: '90%',
               }}
             >
-              {options.map((option) => {
+              {options.map((option, index) => {
                 return (
                   <Buttons
-                    key={option}
+                    key={index}
                     option={option}
                     handleClick={handleClick}
                   />
                 );
               })}
             </div>
-          </div>
-        </Card>
-      </div>
+          </FOOTER_STYLES>
+        </CARD_STYLES>
+      </MODAL_STYLES2>
 
-      <div style={MODAL_STYLES1}>
+      <MODAL_STYLES1>
         <i
           className="fas fa-caret-down"
           style={{
@@ -167,21 +195,81 @@ export default function Chatbot() {
             color: 'rgb(236, 226, 226)',
           }}
         />
-      </div>
+      </MODAL_STYLES1>
 
-      <div style={MODAL_STYLES}>
+      <MODAL_STYLES>
         <div>
-          <div
-            style={MESSAGE_ICON}
-            onClick={() => setClick((cli) => !cli)}
+          <MESSAGE_ICON
+            onClick={() => {
+              setClick((cli) => !cli);
+            }}
           >
             <i
               className="far fa-comment-dots fa-2x"
               style={{ color: '#FFDFC3' }}
             />
-          </div>
+          </MESSAGE_ICON>
         </div>
-      </div>
+      </MODAL_STYLES>
     </>
   );
 }
+
+const MODAL_STYLES = styled.div`
+  position: fixed;
+  bottom: 4%;
+  right: 5%;
+  transform: translate(5%, 4%);
+  background-color: transparent;
+  padding: 0px;
+  z-index: 1000;
+`;
+
+const MESSAGE_ICON = styled.div`
+  background-color: #30475e;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  padding: 0px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0px;
+  z-index: 1000;
+`;
+
+const CARD_STYLES = styled(Card)`
+  background-color: rgb(241, 233, 233);
+  margin: 0px;
+  height: 497px;
+  width: 348px;
+  box-shadow: 5px 5px 5px;
+  position: relative;
+`;
+
+const MODAL_STYLES1 = styled.div`
+  position: fixed;
+  bottom: 8.5%;
+  right: 5.7%;
+  transform: translate(5.7%, -8.5%);
+  background-color: transparent;
+  padding: 0px;
+`;
+
+const MODAL_STYLES2 = styled.div`
+  position: fixed;
+  bottom: 8.6%;
+  right: 6.5%;
+  transform: translate(6.5%, -8.6%);
+  background-color: transparent;
+  padding: 0px;
+`;
+
+const FOOTER_STYLES = styled.div`
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+`;

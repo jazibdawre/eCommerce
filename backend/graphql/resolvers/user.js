@@ -36,6 +36,7 @@ const registerUser = async (args, req) => {
       name: args.userInput.name,
       email: args.userInput.email,
       password: args.userInput.password,
+      phoneNo: args.userInput.phoneNo,
     });
 
     if (user) {
@@ -83,6 +84,8 @@ const updateUserProfile = async (args, req) => {
       if (user) {
         user.name = args.userInput.name || user.name;
         user.email = args.userInput.email || user.email;
+        user.phoneNo = args.userInput.phoneNo || user.phoneNo;
+
         if (args.userInput.password) {
           user.password = args.userInput.password;
         }
@@ -166,6 +169,7 @@ const updateUser = async (args, req) => {
       if (user) {
         user.name = args.userInput.name || user.name;
         user.email = args.userInput.email || user.email;
+        user.phoneNo = args.userInput.phoneNo || user.phoneNo;
         user.isAdmin = args.userInput.isAdmin || user.isAdmin;
 
         const updatedUser = await user.save();
