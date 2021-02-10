@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect, useRef } from 'react';
@@ -128,7 +129,7 @@ export default function Chatbot() {
                     return (
                       <Message
                         message={chat.message}
-                        key={chat.message}
+                        key={index}
                         bottom={bottomRef}
                       />
                     );
@@ -139,7 +140,7 @@ export default function Chatbot() {
                     return (
                       <Robot
                         message={chat.message}
-                        key={chat.message}
+                        key={index}
                         bottom={bottomRef}
                       />
                     );
@@ -147,7 +148,7 @@ export default function Chatbot() {
                     return (
                       <Message
                         message={chat.message}
-                        key={chat.message}
+                        key={index}
                         bottom={false}
                       />
                     );
@@ -155,7 +156,7 @@ export default function Chatbot() {
                     return (
                       <Robot
                         message={chat.message}
-                        key={chat.message}
+                        key={index}
                         bottom={false}
                       />
                     );
@@ -173,7 +174,7 @@ export default function Chatbot() {
             <div
               style={{
                 whiteSpace: 'nowrap',
-                overflowX: 'scroll',
+                overflowX: 'auto',
                 width: '90%',
               }}
             >
@@ -246,7 +247,7 @@ const MESSAGE_ICON = styled.div`
 `;
 
 const CARD_STYLES = styled(Card)`
-  background-color: rgb(241, 233, 233);
+  background-color: #e9eff5;;
   margin: 0px;
   height: 497px;
   width: 348px;

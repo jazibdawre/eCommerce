@@ -27,6 +27,7 @@ function Robot({ message, bottom }) {
               style={{
                 backgroundColor: 'white',
                 display: 'inline-block',
+                maxWidth: '100%',
               }}
             >
               {message}
