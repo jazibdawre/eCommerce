@@ -44,7 +44,7 @@ export const login = (email, password) => async (dispatch) => {
             _id
             name
             email
-            password
+            phoneNo
             isAdmin
             token
           }
@@ -58,14 +58,23 @@ export const login = (email, password) => async (dispatch) => {
       },
     );
 
-    console.log(data);
+    const reconstructedData = {
+      _id: data.data.data.authUser._id,
+      name: data.data.data.authUser.name,
+      email: data.data.data.authUser.email,
+      phoneNo: data.data.data.authUser.phoneNo,
+      isAdmin: data.data.data.authUser.isAdmin,
+    };
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
-      payload: data,
+      payload: reconstructedData,
     });
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
+    localStorage.setItem(
+      'userInfo',
+      JSON.stringify(reconstructedData),
+    );
   } catch (error) {
     dispatch({
       type: USER_LOGIN_FAIL,
@@ -97,16 +106,16 @@ export const register = (name, number, email, password) => async (
       type: USER_REGISTER_REQUEST,
     });
 
-    const { data } = await axios.post(
+    const data = await axios.post(
       'http://localhost:5000/graphql',
       {
         query: `
         mutation {
           registerUser(userInput: {name: "${name}", phoneNo: "${number}", email: "${email}", password: "${password}", isAdmin: ${false}}){
+            _id
             name
             phoneNo
             email
-            password
             isAdmin
           }
         }
@@ -119,19 +128,28 @@ export const register = (name, number, email, password) => async (
       },
     );
 
-    console.log(data);
+    const reconstructedData = {
+      _id: data.data.data.registerUser._id,
+      name: data.data.data.registerUser.name,
+      email: data.data.data.registerUser.email,
+      phoneNo: data.data.data.registerUser.phoneNo,
+      isAdmin: data.data.data.registerUser.isAdmin,
+    };
 
     dispatch({
       type: USER_REGISTER_SUCCESS,
-      payload: data,
+      payload: reconstructedData,
     });
 
     dispatch({
       type: USER_LOGIN_SUCCESS,
-      payload: data,
+      payload: reconstructedData,
     });
 
-    localStorage.setItem('userInfo', JSON.stringify(data));
+    localStorage.setItem(
+      'userInfo',
+      JSON.stringify(reconstructedData),
+    );
   } catch (error) {
     dispatch({
       type: USER_REGISTER_FAIL,
