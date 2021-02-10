@@ -27,6 +27,8 @@ import {
 } from '../constants/userConstants';
 import { ORDER_LIST_MY_RESET } from '../constants/orderConstants';
 
+const url = 'http://localhost:5000/graphql';
+
 export const login = (email, password) => async (dispatch) => {
   try {
     dispatch({
@@ -34,7 +36,7 @@ export const login = (email, password) => async (dispatch) => {
     });
 
     const data = await axios.post(
-      'http://localhost:5000/graphql',
+      url,
       {
         query: `
         query {
@@ -100,7 +102,7 @@ export const register = (name, number, email, password) => async (
       {
         query: `
         mutation {
-          registerUser(userInput: {name: "${name}", phoneNo: "${number}", email: "${email}", password: "${password}", isAdmin: "${false}"}){
+          registerUser(userInput: {name: "${name}", phoneNo: "${number}", email: "${email}", password: "${password}", isAdmin: ${false}}){
             name
             phoneNo
             email
