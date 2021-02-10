@@ -33,12 +33,21 @@ const productSchema = mongoose.Schema(
       required: true,
     },
     brand: {
-      type: String,
-      required: true,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Brand',
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
+    },
+    subcategory: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'SubCategory',
+    },
+    new: {
+      type: Boolean,
+      default: false,
+      required: true,
     },
     description: {
       type: String,
@@ -55,7 +64,17 @@ const productSchema = mongoose.Schema(
       required: true,
       default: 0,
     },
+    discount: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
     price: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    discountedPrice: {
       type: Number,
       required: true,
       default: 0,

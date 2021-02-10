@@ -14,9 +14,6 @@ productId = productName = 'if you see this, createProductQuery has failed';
 // Also, for all queries, subdocuments are not populated, remove their details from graphql queries until implemented
 // This unit is not authenticated, all types of users should have same results
 
-// Temporary manual declaration until implemented
-categoryId = '6016f6f44d1c3300f0a72dea';
-
 const runTests = (userType) => {
   describe(`Product routes: ${userType}`, () => {
     before((done) => {
@@ -65,27 +62,27 @@ const runTests = (userType) => {
           tokenString =
             userType == 'guest' ? '' : `Bearer ${res.body.data.authUser.token}`;
           userId = res.body.data.authUser._id;
-
-          done();
         });
 
-      // chai
-      //   .request(server)
-      //   .post('/graphql')
-      //   .send(categoryQuery)
-      //   .end((err, res) => {
-      //     if (err) {
-      //       console.log(err);
-      //       done(err);
-      //     }
+      chai
+        .request(server)
+        .post('/graphql')
+        .send(categoryQuery)
+        .end((err, res) => {
+          if (err) {
+            console.log(err);
+            done(err);
+          }
 
-      //     if (res.body.errors) {
-      //       console.log(res.body.errors);
-      //       done(new Error('GraphQL Error'));
-      //     }
+          if (res.body.errors) {
+            console.log(res.body.errors);
+            done(new Error('GraphQL Error'));
+          }
 
-      //     categoryId = res.body.getCategories[0]._id;
-      //   });
+          categoryId = res.body.getCategories[0]._id;
+        });
+
+      done();
     });
 
     describe('Create product', () => {
