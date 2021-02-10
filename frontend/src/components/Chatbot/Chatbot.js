@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,6 +37,7 @@ export default function Chatbot() {
         ) {
           return value;
         }
+        return null;
       }),
     );
     setOptions(
@@ -49,6 +51,7 @@ export default function Chatbot() {
         ) {
           return value;
         }
+        return null;
       }),
     );
   };
@@ -124,7 +127,7 @@ export default function Chatbot() {
                     return (
                       <Message
                         message={chat.message}
-                        key={index}
+                        key={chat.message}
                         bottom={bottomRef}
                       />
                     );
@@ -135,7 +138,7 @@ export default function Chatbot() {
                     return (
                       <Robot
                         message={chat.message}
-                        key={index}
+                        key={chat.message}
                         bottom={bottomRef}
                       />
                     );
@@ -143,7 +146,7 @@ export default function Chatbot() {
                     return (
                       <Message
                         message={chat.message}
-                        key={index}
+                        key={chat.message}
                         bottom={false}
                       />
                     );
@@ -151,7 +154,7 @@ export default function Chatbot() {
                     return (
                       <Robot
                         message={chat.message}
-                        key={index}
+                        key={chat.message}
                         bottom={false}
                       />
                     );
@@ -161,7 +164,9 @@ export default function Chatbot() {
           </Container>
           <FOOTER_STYLES className="ml-2 mb-2">
             <small className="ml-2">
-              {options.length === 0 ? '' : 'Choose from one of the replies below'}
+              {options.length === 0
+                ? ''
+                : 'Choose from one of the replies below'}
             </small>
             <br />
             <div
@@ -171,10 +176,10 @@ export default function Chatbot() {
                 width: '90%',
               }}
             >
-              {options.map((option, index) => {
+              {options.map((option) => {
                 return (
                   <Buttons
-                    key={index}
+                    key={option.index}
                     option={option}
                     handleClick={handleClick}
                   />
