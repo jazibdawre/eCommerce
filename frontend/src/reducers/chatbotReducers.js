@@ -1,10 +1,14 @@
+/* eslint-disable import/prefer-default-export */
 import {
   CHATBOT_CREATE_FAIL,
   CHATBOT_CREATE_SUCCESS,
   CHATBOT_CREATE_REQUEST,
 } from '../constants/chatbotConstants';
 
-export const chatbotReducer = (state = {loading:false,data:[],error:""}, action) => {
+export const chatbotReducer = (
+  state = { loading: false, data: [], error: '' },
+  action,
+) => {
   switch (action.type) {
     case CHATBOT_CREATE_REQUEST:
       return { ...state, loading: true };
