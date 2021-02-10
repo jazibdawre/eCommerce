@@ -247,7 +247,7 @@ const MESSAGE_ICON = styled.div`
 `;
 
 const CARD_STYLES = styled(Card)`
-  background-color: #e9eff5;;
+  background-color: #e9eff5;
   margin: 0px;
   height: 497px;
   width: 348px;
