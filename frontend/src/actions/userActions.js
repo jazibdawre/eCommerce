@@ -156,7 +156,7 @@ export const register = (name, number, email, password) => async (
       payload:
         error.response && error.response.data.message
           ? error.response.data.message
-          : error.message,
+          : error.response.data.errors[0].message,
     });
   }
 };
