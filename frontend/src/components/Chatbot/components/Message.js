@@ -34,6 +34,7 @@ function Message({ message, bottom }) {
           style={{
             backgroundColor: '#DFF2FA',
             display: 'inline-block',
+            maxWidth: '100%',
           }}
         >
           {message}

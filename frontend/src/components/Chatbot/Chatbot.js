@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
@@ -117,49 +118,47 @@ export default function Chatbot() {
           </div>
           <Container
             className="mt-2"
-            style={{ height: '78%', overflowY: 'scroll' }}
+            style={{ height: '78%', overflowY: 'auto' }}
           >
             {chatbot.loading
               ? 'Loading'
               : chats.map((chat, index) => {
-                  if (
-                    chat.type === 'message' &&
-                    index === chats.length - 1
-                  )
-                    return (
-                      <Message
-                        message={chat.message}
-                        key={index}
-                        bottom={bottomRef}
-                      />
-                    );
-                  if (
-                    chat.type === 'robot' &&
-                    index === chats.length - 1
-                  )
-                    return (
-                      <Robot
-                        message={chat.message}
-                        key={index}
-                        bottom={bottomRef}
-                      />
-                    );
-                  if (chat.type === 'message')
-                    return (
-                      <Message
-                        message={chat.message}
-                        key={index}
-                        bottom={false}
-                      />
-                    );
-                  if (chat.type === 'robot')
-                    return (
-                      <Robot
-                        message={chat.message}
-                        key={index}
-                        bottom={false}
-                      />
-                    );
+                  if (chat.type === 'message') {
+                    if (index === chats.length - 1)
+                      return (
+                        <Message
+                          message={chat.message}
+                          key={index}
+                          bottom={bottomRef}
+                        />
+                      );
+                    else
+                      return (
+                        <Message
+                          message={chat.message}
+                          key={index}
+                          bottom={false}
+                        />
+                      );
+                  } else if (chat.type === 'robot') {
+                    if (index === chats.length - 1)
+                      return (
+                        <Robot
+                          message={chat.message}
+                          key={index}
+                          bottom={bottomRef}
+                        />
+                      );
+                    else
+                      return (
+                        <Robot
+                          message={chat.message}
+                          key={index}
+                          bottom={false}
+                        />
+                      );
+                  }
+
                   return <></>;
                 })}
             {}
