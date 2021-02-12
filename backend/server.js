@@ -3,6 +3,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import colors from 'colors';
 import morgan from 'morgan';
+import Redis from 'ioredis';
 import cors from 'cors';
 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
@@ -19,6 +20,7 @@ dotenv.config();
 await connectDB();
 
 const app = express();
+const redis = new Redis();
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
@@ -27,21 +29,26 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 app.use(cors({ credentials: true }));
 app.use(verify);
-app.use(cors())
+app.use(cors());
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
   next();
 });
 
-
 app.use(
   '/graphql',
-  graphqlHTTP({
-    schema: graphqlSchema,
-    rootValue: graphqlResolvers,
-    graphiql: process.env.NODE_ENV === 'development' ? true : false,
+  graphqlHTTP((req, res, graphQLParams) => {
+    return {
+      schema: graphqlSchema,
+      rootValue: graphqlResolvers,
+      context: { req, redis },
+      graphiql: process.env.NODE_ENV === 'development' ? true : false,
+    };
   })
 );
 
