@@ -282,6 +282,75 @@ const getProductReviews = async (args) => {
   }
 }
 
+//add product questions
+//private/
+const createProductQuestion = async (args, req) => {
+  try {
+    if(loggedin(req)) {
+      const product = await Product.find({ _id: args.productId });
+      if(product) {
+        let questions = product[0].questions;
+        const question = {
+          question: args.question,
+        }
+        questions.push(question);
+        const updatedProduct = {
+          questions: questions,
+        }
+        await Product.findByIdAndUpdate(args.productId, {$set: updatedProduct,});
+        const newUpdatedProduct = await Product.findById(args.productId);
+        return newUpdatedProduct;
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+//add product answers
+//private/
+const createProductAnswer = async (args, req) => {
+  try {
+    if(loggedin(req)) {
+      const product = await Product.find({ _id: args.productId });
+      if(product) {
+        let questions = product[0].questions;
+        
+        questions[args.Qindex] = {
+          question: questions[args.Qindex].question,
+          answer: args.answer,
+        }
+
+        const updatedProduct = {
+          questions: questions,
+        }
+        await Product.findByIdAndUpdate(args.productId, {$set: updatedProduct,});
+        const newUpdatedProduct = await Product.findById(args.productId);
+        return newUpdatedProduct;
+      }
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
+//get product QnAs
+//public
+const getProductQnAs = async (args) => {
+  try {
+    const product = await Product.find({ _id: args.productId });
+    if(product) {
+      const questions = product[0].questions;
+      return questions;
+    }
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+}
+
 export {
   createProduct,
   getProductByCategory,
@@ -292,4 +361,7 @@ export {
   deleteProduct,
   createProductReview,
   getProductReviews,
+  createProductQuestion,
+  createProductAnswer,
+  getProductQnAs,
 };
