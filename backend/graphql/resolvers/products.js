@@ -269,7 +269,10 @@ const createProductReview = async (args, req) => {
       if (product) {
         let reviews = product[0].reviews;
         let numReviews = product[0].numReviews;
+        let avgRate =
+          product[0].avgRating * numReviews + args.productReview.rating;
         numReviews = product[0].reviews.length + 1;
+        avgRate = avgRate / numReviews;
         const review = {
           name: args.productReview.name,
           rating: args.productReview.rating,
@@ -280,6 +283,7 @@ const createProductReview = async (args, req) => {
         const updatedProduct = {
           reviews: reviews,
           numReviews: numReviews,
+          avgRating: avgRate,
         };
         await Product.findByIdAndUpdate(args.productId, {
           $set: updatedProduct,
